@@ -33,6 +33,7 @@
 		005BC93914531CE60076D1FF /* Capture.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 005BC93814531CE60076D1FF /* Capture.bundle */; };
 		005BC93B14531CE60076D1FF /* PhoneGap.plist in Resources */ = {isa = PBXBuildFile; fileRef = 005BC93A14531CE60076D1FF /* PhoneGap.plist */; };
 		005BC93F14531CE60076D1FF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 005BC93E14531CE60076D1FF /* AppDelegate.m */; };
+		005BC94814531DD60076D1FF /* www in Resources */ = {isa = PBXBuildFile; fileRef = 005BC94714531DD60076D1FF /* www */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,10 +51,10 @@
 		005BC91214531CE60076D1FF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		005BC91414531CE60076D1FF /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		005BC91614531CE60076D1FF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		005BC91A14531CE60076D1FF /* realtime-Info.plist */ = {isa = PBXFileReference; path = "realtime-Info.plist"; sourceTree = "<group>"; };
+		005BC91A14531CE60076D1FF /* realtime-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "realtime-Info.plist"; sourceTree = "<group>"; };
 		005BC91C14531CE60076D1FF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		005BC91E14531CE60076D1FF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		005BC92014531CE60076D1FF /* realtime-Prefix.pch */ = {isa = PBXFileReference; path = "realtime-Prefix.pch"; sourceTree = "<group>"; };
+		005BC92014531CE60076D1FF /* realtime-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "realtime-Prefix.pch"; sourceTree = "<group>"; };
 		005BC92114531CE60076D1FF /* PhoneGap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhoneGap.framework; path = /Users/Shared/PhoneGap/Frameworks/PhoneGap.framework; sourceTree = "<absolute>"; };
 		005BC92614531CE60076D1FF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		005BC92A14531CE60076D1FF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Resources/es.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -64,9 +65,10 @@
 		005BC93614531CE60076D1FF /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/splash/Default@2x.png"; sourceTree = "<group>"; };
 		005BC93814531CE60076D1FF /* Capture.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Capture.bundle; path = Resources/Capture.bundle; sourceTree = "<group>"; };
 		005BC93A14531CE60076D1FF /* PhoneGap.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PhoneGap.plist; sourceTree = "<group>"; };
-		005BC93D14531CE60076D1FF /* AppDelegate.h */ = {isa = PBXFileReference; name = AppDelegate.h; path = Classes/AppDelegate.h; sourceTree = "<group>"; };
+		005BC93D14531CE60076D1FF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Classes/AppDelegate.h; sourceTree = "<group>"; };
 		005BC93E14531CE60076D1FF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Classes/AppDelegate.m; sourceTree = "<group>"; };
-		005BC94114531CE60076D1FF /* README */ = {isa = PBXFileReference; name = README; path = Plugins/README; sourceTree = "<group>"; };
+		005BC94114531CE60076D1FF /* README */ = {isa = PBXFileReference; lastKnownFileType = text; name = README; path = Plugins/README; sourceTree = "<group>"; };
+		005BC94714531DD60076D1FF /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 		005BC8EC14531CE60076D1FF = {
 			isa = PBXGroup;
 			children = (
+				005BC94714531DD60076D1FF /* www */,
 				005BC91814531CE60076D1FF /* realtime */,
 				005BC8FD14531CE60076D1FF /* Frameworks */,
 				005BC8FB14531CE60076D1FF /* Products */,
@@ -290,6 +293,7 @@
 				005BC93714531CE60076D1FF /* Default@2x.png in Resources */,
 				005BC93914531CE60076D1FF /* Capture.bundle in Resources */,
 				005BC93B14531CE60076D1FF /* PhoneGap.plist in Resources */,
+				005BC94814531DD60076D1FF /* www in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,6 +417,7 @@
 				GCC_PREFIX_HEADER = "realtime/realtime-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
 				INFOPLIST_FILE = "realtime/realtime-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -429,6 +434,7 @@
 				GCC_PREFIX_HEADER = "realtime/realtime-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
 				INFOPLIST_FILE = "realtime/realtime-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
