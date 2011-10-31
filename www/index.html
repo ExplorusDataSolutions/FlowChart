@@ -4,6 +4,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
 
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<!-- app no need title
+	<title></title>
+	-->
+    <link href="lib/touch/resources/css/sencha-touch.css" rel="stylesheet" type="text/css" />
+	<!--
+    <script src="lib/touch/sencha-touch.js" type="text/javascript"></script>
+	-->
+    <script src="lib/touch/sencha-touch-debug-w-comments.js" type="text/javascript"></script>
+	
+	<script type="text/javascript" src="app/app.js"></script>
+	<script type="text/javascript" src="app/views/Viewport.js"></script>
+	<script type="text/javascript" src="app/models/Station.js"></script>
+	<script type="text/javascript" src="app/views/StationList.js"></script>
+	<script type="text/javascript" src="app/views/StationChart.js"></script>
+	<script type="text/javascript" src="app/views/ContactForm.js"></script>
+	<script type="text/javascript" src="app/controllers/stations.js"></script>
+	<style>
+		.card .x-panel-body {
+	       background-color: white;
+		}
+		.station span {
+			font-size: 9px;
+			color: silver;
+		}
+		.station a {
+			font-size: 18px;
+			color: #444;
+		}
+	</style>
 
 	<!-- iPad/iPhone specific css below, add after your main css >
 	<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />		
@@ -45,13 +74,65 @@
 	function onDeviceReady()
 	{
 		// do your thing!
-		navigator.notification.alert("PhoneGap is working")
+		//navigator.notification.alert("PhoneGap is working")
+		app.mainLaunch();
+		
+		/**
+		 * This is a simple test to detect ajax and response.
+		 *  For remote http://... request:
+		 *    ajax is {
+		 *		readyState: 4,
+		 *		response: [string $responseText],
+		 *		responseXML: null,
+		 *		onload: null,
+		 *		onerror: null,
+		 *		onloadstart: null,
+		 *		status: 200,
+		 *		onabort: null,
+		 *		upload: [object XMLHttpRequestUpload],
+		 *		onreadystatechange: [function ...],
+		 *		responseType:　'',
+		 *		onprogress: null,
+		 *		withCredentials: false,
+		 *		responseText: [string $responseText],
+		 *		statusText: OK,
+		 *		open: [native function],
+		 *		send: [native function],
+		 *		...
+		 *	  }
+		 *	For local data.json request:
+		 *		the only difference is:
+		 *		status: 0
+		 *
+		 *	  response is {
+		 *		position: 0,
+		 *		totalSize: 0,
+		 *		loaded: 0,
+		 *		total: 0,
+		 *		returnValue: true,
+		 *		...
+		 *	  }, oh my god, it should be an "event"
+		 *
+		 *	So, ajax === event.target === event.srcElement
+		 *	all clear.
+		 * /
+		var ajax = new XMLHttpRequest();
+		//ajax.open('GET', 'http://50.17.233.63/awp/api/realtime/service/1', true);
+		ajax.open('GET', 'data.json', true);
+		ajax.onreadystatechange = function(event) {//response => event
+			if (ajax.readyState == 4) {
+				alert(ajax === event.target)
+				alert('status:' + ajax.status);
+				alert(ajax.responseText)
+				alert('responseText:' + response.responseText)
+				alert('target.responseText:' + response.target.responseText)
+			}
+		}
+		ajax.send(null);
+		/**/
 	}
     
     </script>
   </head>
-  <body onload="onBodyLoad()">
-  	  <h1>Hey, it's PhoneGap!</h1>
-	  <p>Don't know how to get started? Check out <em><a href="http://github.com/phonegap/phonegap-start">PhoneGap Start</a></em>  	
-  </body>
+  <body onload="onBodyLoad()"></body>
 </html>
