@@ -133,6 +133,8 @@ app.stores.stations = new Ext.data.Store({
 			})
 		});
 		
+		Ext.getBody().mask('Loading...', 'x-mask-loading', false);
+		
 		proxy.read(new Ext.data.Operation({action: 'read'}), function(operation) {
 			var records = operation.getRecords();
 			
@@ -148,7 +150,7 @@ app.stores.stations = new Ext.data.Store({
 			this.proxy.clear();
 			this.loadRecords(records);
 			
-			
+			Ext.getBody().unmask();
 			this.sync();//300 station need 15s, too slow
 		}, this);
 	}
