@@ -29,11 +29,15 @@
 		005BC93014531CE60076D1FF /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 005BC92F14531CE60076D1FF /* icon@2x.png */; };
 		005BC93214531CE60076D1FF /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 005BC93114531CE60076D1FF /* icon-72.png */; };
 		005BC93514531CE60076D1FF /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 005BC93414531CE60076D1FF /* Default.png */; };
-		005BC93714531CE60076D1FF /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 005BC93614531CE60076D1FF /* Default@2x.png */; };
 		005BC93914531CE60076D1FF /* Capture.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 005BC93814531CE60076D1FF /* Capture.bundle */; };
 		005BC93B14531CE60076D1FF /* PhoneGap.plist in Resources */ = {isa = PBXBuildFile; fileRef = 005BC93A14531CE60076D1FF /* PhoneGap.plist */; };
 		005BC93F14531CE60076D1FF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 005BC93E14531CE60076D1FF /* AppDelegate.m */; };
 		005BC94814531DD60076D1FF /* www in Resources */ = {isa = PBXBuildFile; fileRef = 005BC94714531DD60076D1FF /* www */; };
+		006952E1146856E700EACDAB /* 57_57_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 006952DD146856E700EACDAB /* 57_57_Logo.png */; };
+		006952E2146856E700EACDAB /* 114_114_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 006952DE146856E700EACDAB /* 114_114_Logo.png */; };
+		006952E3146856E700EACDAB /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 006952DF146856E700EACDAB /* Default.png */; };
+		006952E4146856E700EACDAB /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 006952E0146856E700EACDAB /* Default@2x.png */; };
+		006952E61468578900EACDAB /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 005BC93614531CE60076D1FF /* Default@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +73,10 @@
 		005BC93E14531CE60076D1FF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Classes/AppDelegate.m; sourceTree = "<group>"; };
 		005BC94114531CE60076D1FF /* README */ = {isa = PBXFileReference; lastKnownFileType = text; name = README; path = Plugins/README; sourceTree = "<group>"; };
 		005BC94714531DD60076D1FF /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
+		006952DD146856E700EACDAB /* 57_57_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 57_57_Logo.png; sourceTree = "<group>"; };
+		006952DE146856E700EACDAB /* 114_114_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 114_114_Logo.png; sourceTree = "<group>"; };
+		006952DF146856E700EACDAB /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		006952E0146856E700EACDAB /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +114,10 @@
 		005BC8EC14531CE60076D1FF = {
 			isa = PBXGroup;
 			children = (
+				006952DD146856E700EACDAB /* 57_57_Logo.png */,
+				006952DE146856E700EACDAB /* 114_114_Logo.png */,
+				006952DF146856E700EACDAB /* Default.png */,
+				006952E0146856E700EACDAB /* Default@2x.png */,
 				005BC94714531DD60076D1FF /* www */,
 				005BC91814531CE60076D1FF /* realtime */,
 				005BC8FD14531CE60076D1FF /* Frameworks */,
@@ -290,10 +302,14 @@
 				005BC93014531CE60076D1FF /* icon@2x.png in Resources */,
 				005BC93214531CE60076D1FF /* icon-72.png in Resources */,
 				005BC93514531CE60076D1FF /* Default.png in Resources */,
-				005BC93714531CE60076D1FF /* Default@2x.png in Resources */,
 				005BC93914531CE60076D1FF /* Capture.bundle in Resources */,
 				005BC93B14531CE60076D1FF /* PhoneGap.plist in Resources */,
 				005BC94814531DD60076D1FF /* www in Resources */,
+				006952E1146856E700EACDAB /* 57_57_Logo.png in Resources */,
+				006952E2146856E700EACDAB /* 114_114_Logo.png in Resources */,
+				006952E3146856E700EACDAB /* Default.png in Resources */,
+				006952E4146856E700EACDAB /* Default@2x.png in Resources */,
+				006952E61468578900EACDAB /* Default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

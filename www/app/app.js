@@ -5,11 +5,29 @@ Ext.regApplication({
         this.mainLaunch();
     },
     mainLaunch: function() {
-        if (typeof device == 'undefined' || !this.launched) {return;}
+		if (navigator.notification) {
+			if (typeof device == 'undefined' || !this.launched) {return;}
+		}
 		
+		var confirm = window.confirm;
+		window.confirm = function(message, callback, title, buttons) {
+			if (navigator.notification) {
+				navigator.notification.confirm(message, callback, title, buttons);
+			} else {
+				confirm(message) && callback(1);//default value 1 for OK
+			}
+		}
 		
-		this.views.viewport = new this.views.Viewport();
-				
+		var alert = window.alert;
+		window.alert = function(message) {
+			navigator.notification ? navigator.notification.alert(message) : alert(message);
+		}
+		
+		try {
+			this.views.viewport = new this.views.Viewport();
+		} catch(e) {
+			alert('Error when new viewport:' + e)
+		}
 		
 		/**
 		 * AjaxProxy usage example 1
@@ -83,5 +101,7 @@ Ext.regApplication({
 			alert(JSON.stringify(r))
 		});
 		/**/
-    }
+		
+		
+	}
 });

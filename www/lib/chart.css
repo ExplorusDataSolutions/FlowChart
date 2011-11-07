@@ -1,0 +1,80 @@
+
+.ml-chart {
+	/**# let the width expand to device width*/
+	/*width: 600px;*/
+    position: relative;
+	margin: 30px;
+    border: 1px solid gray;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+/* 1w 1m 3m 6m 1y 5y */
+#labels {
+	/**# let the width expand to device width*/
+    /*position: absolute;
+    top: -20px;
+    width: 600px;*/
+    z-index: 10;
+}
+#time {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    font-size: 10px; 
+    z-index: 10;
+}
+#time a {
+    background: #ffffff;
+    cursor: pointer;
+    border-right: 2px solid transparent;
+    color: #4499FF;
+    text-decoration: underline;
+}
+/* 1w 1m 3m 6m 1y 5y */
+#dateRange {
+	/**# */
+    /*position: absolute;
+    right: 4px;
+    top: -14px;*/
+    font-size: 10px;
+}
+.handle {
+    position: absolute;
+    z-index: 10;
+    cursor: pointer;
+    background: #eeeeee; 
+    border: 1px solid #bbbbbb; 
+    border-radius: 3px;
+    -webkit-border-radius: 3px; 
+    -moz-border-radius: 3px;
+}
+.zoomHandle {
+    width: 30px; 
+    height: 40px; 
+}
+.scrollHandle {
+    width: 100px;
+    height: 50px;
+}
+.flag {
+    border: 1px solid #4499FF;
+    background: white;
+    padding: 1px 2px 1px 2px;
+}
+.flagpole {
+    border-left: 1px solid #4499FF;
+}
+.flotr-grid-label {
+    font-size: 11px;
+    background: #ffffff;
+    margin: 2px 0px 0px 4px;
+}
+.flotr-mouse-value {
+    font-size: 10px;
+}
+#summaryGraph .flotr-grid-label {
+    margin-top: -16px;
+    background: transparent;
+    text-align: left;
+}

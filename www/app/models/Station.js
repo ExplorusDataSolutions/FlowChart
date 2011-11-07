@@ -1,7 +1,63 @@
 app.models.Station = Ext.regModel("app.models.Station", {
     fields: [
         {name: "id", type: "int"},
-        {name: "station", type: "string"},
+        {name: "station", type: "string", mapping: function(obj) {return obj[0]}, index: 0},
+		{name: "_lon",
+			type: "number",
+			useNull: true,
+			defaultValue: null,
+			index: 1,
+			mapping: function(obj) {
+				return obj[1]
+			}},
+		{name: "lon", type: "number",
+			convert: function(value, record) {
+				value = parseFloat(record.get('_lon'));
+				
+				// lon may be null, then value has no toFixed method
+				return isNaN(value) ? null : value.toFixed(2);
+			}
+		},
+		// to keep the precious
+		{name: "_lat",
+			type: "number",
+			useNull: true,
+			defaultValue: null,
+			index: 2,
+			mapping: function(obj) {
+				return obj[2]}
+			},
+		{name: "lat", type: "number",
+			convert: function(value, record) {
+				var lat = record.get('_lat');
+				value = parseFloat(lat);
+				
+				// lat may be null, then value has no toFixed method
+				return isNaN(value) ? null : value.toFixed(2);
+			}
+		},
+		{name: "lonlat", type: "int",
+			convert: function(value, record) {
+				return record.get('lon') != null && record.get('lat') != null;
+		 	}
+		},
+		{name: "layers",
+			index: 3,
+			mapping: function(obj) {return obj[3]}
+		},
+		{name: "hasdata",
+			convert: function(value, record) {
+				var hasdata = false,
+					layers = record.get("layers");
+				for (var i = 0, layer; layer = layers[i++];) {
+					if (layer[1]) {
+						hasdata = true;
+						break;
+					}
+				}
+				return hasdata;
+			}
+		}
     ]
 });
 
@@ -43,6 +99,10 @@ Ext.data.MyLocalStorageProxy = Ext.extend(Ext.data.WebStorageProxy, {
 			callback.call(scope || this, operation);
 		}
     },
+    //inherit docs
+	clear: function() {
+        this.getStorageObject().removeItem(this.id);
+    },
 	getRecords: function() {
 		try{
 			var rawRecords = Ext.decode(this.getStorageObject().getItem(this.id));
@@ -62,17 +122,20 @@ Ext.data.MyLocalStorageProxy = Ext.extend(Ext.data.WebStorageProxy, {
 				field = fields[i];
 				name  = field.name;
 				
-				if (typeof field.decode == 'function') {
-					data[name] = field.decode(rawRecord[name]);
-				} else {
-					data[name] = rawRecord[name];
-				}
+				//if (typeof field.decode == 'function') {
+				//	data[name] = field.decode(rawRecord[name]);
+				//} else {
+					//data[name] = rawRecord[name];
+					field.mapping && (data[name] = rawRecord[field.index]);
+				//}
 			}
+			
+			data.id = j;
 
 			record = new Model(data);
 			record.phantom = false;
 			
-			records.push(record);
+			records.push(record);//if(j>4)break;
 		}
 		
 		return records;
@@ -82,21 +145,26 @@ Ext.data.MyLocalStorageProxy = Ext.extend(Ext.data.WebStorageProxy, {
 		
 		for (var j = 0, record; record = records[j++];) {
 			var rawData = record.data,
-			data    = {},
+			data    = [],	// here we use [] to instead of {} because we will store array for no key string
 			model   = this.model,
 			fields  = model.prototype.fields.items,
 			length  = fields.length,
 			i, field, name;
-
+			
 			for (i = 0; i < length; i++) {
 				field = fields[i];
 				name  = field.name;
 
-				if (typeof field.encode == 'function') {
-					data[name] = field.encode(rawData[name], record);
-				} else {
-					data[name] = rawData[name];
-				}
+				// here we don't use 'encode' choice
+				//if (typeof field.encode == 'function') {
+				//	data[name] = field.encode(rawData[name], record);
+				//} else {
+					//data[name] = rawData[name];
+					// only store fields having "mapping"
+					if (field.mapping) {
+						data.push(rawData[name]);
+					}
+				//}
 			}
 			
 			rawRecords.push(data);
@@ -117,17 +185,25 @@ app.stores.stations = new Ext.data.Store({
     model: "app.models.Station",
     sorters: 'station',
     getGroupString : function(record) {
-        return record.get('station')[0].toUpperCase();
+        try {
+			return record.get('station')[0].toUpperCase();
+		} catch(e) {
+			//alert('getGroupString: ' + e);
+			return '' + e;
+		}
     },
 	proxy: {
 		type: 'mylocalstorage',
 		id: 'stations'
 	},
-	loadStationListFromServer: function() {
+	loadStationListFromServer: function(timeoutSeconds) {
+		timeoutSeconds = timeoutSeconds || 30;
 		this.removeAll();
-	
+		
 		var proxy = new Ext.data.AjaxProxy({
 			url: 'http://www.albertawater.com/awp/api/realtime/stations',
+			//url: 'http://localhost/iphone/test.html',
+			timeout: timeoutSeconds * 1000,
 			reader: new Ext.data.JsonReader({
 				model: app.models.Station
 			})
@@ -137,21 +213,24 @@ app.stores.stations = new Ext.data.Store({
 		
 		proxy.read(new Ext.data.Operation({action: 'read'}), function(operation) {
 			var records = operation.getRecords();
+			if (typeof records == 'undefined') {
+				records = [];
+			}
 			
 			for (var i = 0, record; record = records[i++];) {
 				if (record.data.id == 0) {
 					record.data.id = i;
 				}
 			}
-			//alert(app.views.stationList.getComponent('card-stations').setBadge)
-			//app.views.stationList.items[0].setBadge(records.length);
-			navigator.notification.alert('Total ' + records.length + ' stations loaded');
 			
+			Ext.getBody().mask('Saving into local storage...', 'x-mask-loading', false);
+			alert('Total ' + records.length + ' stations loaded');
+			try{
 			this.proxy.clear();
 			this.loadRecords(records);
-			
-			Ext.getBody().unmask();
+			}catch(e){alert(e)}
 			this.sync();//300 station need 15s, too slow
+			Ext.getBody().unmask();
 		}, this);
 	}
 });

@@ -35,7 +35,7 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 							keyword = this.getValue().toLowerCase();
 						
 						store.filterBy(function(item, key){
-							return item.data.station.toLowerCase().indexOf(keyword) != -1;
+							return item.get('station').toLowerCase().indexOf(keyword) != -1;
 						});
 					}
 				}
@@ -43,12 +43,12 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 				//text: 'Refresh',
 				iconCls: 'refresh',
 				handler: function() {
-					navigator.notification.confirm(
-						'Load stations from server?',  // message
+					confirm(
+						'Load stations from server? Timeout is extended to 180 seconds',  // message
 						function(button) {
 							if (button == 1) {// 1 for OK
 								var store = app.stores.stations;
-								store.loadStationListFromServer();
+								store.loadStationListFromServer(180);
 							}
 						},
 						'Refresh local data',	// title
@@ -65,16 +65,57 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		items: [{
 			xtype: 'list',
 			store: app.stores.stations,
-			itemTpl: '<div class="station"><span>{id}.</span> <a>{station}</a></div>',
+			itemTpl: [
+				'<div>',
+					'<div class="title">',
+						'<span>{id}. </span>',
+						'<a class="', '<tpl if="hasdata">has-data</tpl>', '<tpl if="!hasdata">no-data</tpl>', '">{station}</a>',
+					'</div>',
+					'<div class="info ', '<tpl if="lonlat==true">has-location</tpl>', '<tpl if="lonlat==false">no-location</tpl>', '">',
+						'<table><tr><td>',
+						'<tpl if="lonlat"><div class="lonlat">{lon}, {lat}</div></tpl>',
+						'<div class="layers">',
+							'<tpl for="layers">',
+								'<tpl if="values[1]"><a class="has-data">{0}<a></tpl>',
+								'<tpl if="!values[1]"><a class="no-data">{0}<a></tpl>',
+								'<tpl if="xindex!=xcount"><a class="no-data">&nbsp;- </a></tpl>',
+							'</tpl>',
+						'</div>',
+						'</td></tr></table>',
+					'</div>',
+				'</div>',
+			],
 			grouped: true,
 			indexBar: true,
-			onItemDisclosure: function (record) {
+			listeners: {
+				itemtap: function(view, index, item, event) {
+					var el = event.target;
+					if (el.parentNode.className == 'layers') {
+						var record = this.store.getAt(index),
+							station = record.get('station'),
+							layer = el.innerHTML;
+						
+						// bold station name
+						Ext.query('div[class=title] > a', item)[0].setStyle('font-weight:bold');
+						app.views.stationChart.updateWithRecord(record, layer);
+						
+						Ext.dispatch({
+							controller: app.controllers.stations,
+							action: 'show',
+							animation: {type:'slide', direction:'left'}
+						});
+						
+						app.views.stationChart.getComponent('chart').renderChart(station, layer);
+					}
+				}
+			}
+			/*onItemDisclosure: function (record) {
 				Ext.dispatch({
 					controller: app.controllers.stations,
 					action: 'show',
-					station: record.data.station
+					station: record.get('station'),
 				});
-			}
+			}*/
 		}],
 	}, {
 		title: 'About',
@@ -101,11 +142,11 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		store.load();
 		
 		if (0 == store.getCount()) {
-			navigator.notification.confirm(
-				'Load stations right away?',  // message
+			confirm(
+				'Load stations right away? If it fails within 30 seconds, please try Refresh button with more time',  // message
 				function(button) {
 					if (button == 1) {// 1 for OK
-						store.loadStationListFromServer();
+						store.loadStationListFromServer(30);
 					}
 				},
 				'Local data not detected',	// title

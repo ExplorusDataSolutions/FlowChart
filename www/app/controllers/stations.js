@@ -5,9 +5,10 @@ app.controllers.stations = new Ext.Controller({
         );
     },
     show: function(options) {
-        var station = options.station;
+        var station = options.station,
+			layer = options.layer;
 		
-		app.views.stationChart.updateWithRecord({station: station});
+		//app.views.stationChart.updateWithRecord({station: station});
 		app.views.viewport.setActiveItem(
 			app.views.stationChart, options.animation
 		);
