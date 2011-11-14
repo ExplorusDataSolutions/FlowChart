@@ -137,7 +137,7 @@ var HumbleFinance = {
         var area = {
             x1: this.bounds.xmin, 
             y1: this.bounds.ymin, 
-            x2: this.bounds.xmax * 0.382, 
+            x2: this.bounds.xmax * 0.618, 
             y2: this.bounds.ymax
         };
         this.graphs.summary = this.summaryGraph(this.summaryData, this.bounds);
@@ -155,29 +155,20 @@ var HumbleFinance = {
         this.containers.price = new Element('div', {id: 'priceGraph', style: 'width: 100%; height: ' + this.options.priceHeight + ';'});
         this.containers.summary = new Element('div', {id: 'summaryGraph', style: 'width: 100%; height: ' + this.options.summaryHeight + ';'});
         this.containers.flags = new Element('div', {id: 'flagContainer'/*, style: 'width: 0px; height: 0px;'*/});
-        this.handles.left = new Element('div', {id: 'leftHandle', 'class': 'handle zoomHandle', style: 'display: none;'});
-        this.handles.right = new Element('div', {id: 'rightHandle', 'class': 'handle zoomHandle', style: 'display: none;'});
+        ///this.handles.left = new Element('div', {id: 'leftHandle', 'class': 'handle zoomHandle', style: 'display: none;'});
+        ///this.handles.right = new Element('div', {id: 'rightHandle', 'class': 'handle zoomHandle', style: 'display: none;'});
         this.handles.scroll = new Element('div', {id: 'scrollHandle', 'class': 'handle scrollHandle', style: 'display: none;'});
         
-        ///# cancel click effect
-        this.containers.price.onclick = function() {return false}
-        
-        this.handles.left.onselectstart = function () { return false; };
-        this.handles.right.onselectstart = function () { return false; };
-        ///this.handles.scroll.onselectstart = function () { return false; };
-        
-        ///##
-        //this.handles.scroll.onclick = function () { return false; };
-        ///this.handles.scroll.onselectstart = function () { return false; };
+       /// this.handles.left.onselectstart = function () { return false; };
+        ///this.handles.right.onselectstart = function () { return false; };
+        this.handles.scroll.onselectstart = function () { return false; };
         
         // Insert into container
         container.insert(this.containers.price);
-        ///# remove volume chart
-        ///container.insert(this.containers.volume);
         container.insert(this.containers.summary);
         container.insert(this.containers.flags);
-        container.insert(this.handles.left);
-        container.insert(this.handles.right);
+        ///container.insert(this.handles.left);
+        ///container.insert(this.handles.right);
         container.insert(this.handles.scroll);
     },
     
@@ -187,68 +178,35 @@ var HumbleFinance = {
     attachEventObservers: function() {
         
         // Attach summary click event to clear selection
-        Event.observe(this.containers.summary, 'flotr:click', this.reset.bind(this));
+        ///Event.observe(this.containers.summary, 'flotr:click', this.reset.bind(this));
         
         // Attach observers for hit tracking on price and volume points
-        ///# remove volume chart
-        ///Event.observe(this.containers.volume, 'flotr:hit', this.volumeHitObserver.bind(this));
-        ///Event.observe(this.containers.volume, 'flotr:clearhit', this.clearHit.bind(this));
-        Event.observe(this.containers.price, 'flotr:hit', this.priceHitObserver.bind(this));
         Event.observe(this.containers.price, 'flotr:clearhit', this.clearHit.bind(this));
         
         // Handle observers
         Event.observe(this.containers.summary, 'flotr:select', this.positionScrollHandle.bind(this));
         Event.observe(this.containers.summary, 'flotr:select', this.positionZoomHandles.bind(this));
-        Event.observe(this.handles.left, 'mousedown', this.zoomObserver.bind(this));
-        Event.observe(this.handles.right, 'mousedown', this.zoomObserver.bind(this));
+       /// Event.observe(this.handles.left, 'mousedown', this.zoomObserver.bind(this));
+       /// Event.observe(this.handles.right, 'mousedown', this.zoomObserver.bind(this));
+        Event.observe(this.handles.scroll, 'touchstart', this.scrollObserver.bind(this));
         
-        if (!this.options.touchable) {
-        	Event.observe(this.handles.scroll, 'mousedown', this.scrollObserver.bind(this));
-        } else {
-	        ///# add touchmove for scroll
-	        Event.observe(this.handles.scroll, 'touchstart', this.touchScrollObserver.bind(this));
-        }
         // On manual selection, hide zoom and scroll handles
-        Event.observe(this.containers.summary, 'mousedown', this.hideSelection.bind(this));
+        ///Event.observe(this.containers.summary, 'mousedown', this.hideSelection.bind(this));
         
         // Attach summary selection event to redraw price and volume charts
         Event.observe(this.containers.summary, 'flotr:select', this.selectObserver.bind(this));
+		
+		Event.observe(this.containers.price, 'touchstart', this.zoomTouchstart.bind(this));
+		Event.observe(this.containers.price, 'touchmove', this.zoomTouchmove.bind(this));
     },
-    
-    /**
-     * Summary Graph Selection Observer
-     * 
-     * @param e MouseEvent
-     */
-    selectObserver: function (e) {
-            
-        var area = e.memo[0];
-        xmin = Math.floor(area.x1);
-        xmax = Math.ceil(area.x2);
-        
-        var newBounds = {'xmin': xmin, 'xmax': xmax, 'ymin': null, 'ymax': null};
-        
-        this.graphs.price = this.priceGraph(this.priceData.slice(xmin, xmax+1), newBounds);
-        ///# remove volume chart
-        ///this.graphs.volume = this.volumeGraph(this.volumeData.slice(xmin, xmax+1), newBounds);
-        
-        this.drawFlags();
-        
-        
-        ///# touchmove event
-        Event.observe(this.graphs.price.overlay, 'touchmove', this.touch.bind(this));
-        Event.observe(this.graphs.price.overlay, 'touchend', this.touch.bind(this));
-    },
-    
-    touch: function(event) {
-    	event.preventDefault();
-    	
-    	if (event.touches.length == 1) {
-			var priceGraph = this.graphs.price,
-				offset = priceGraph.overlay.cumulativeOffset(),
-				pointer = {x: event.touches[0].pageX, y: event.touches[0].pageY},
-				rx = (pointer.x - offset.left - priceGraph.plotOffset.left),
-				ry = (pointer.y - offset.top - priceGraph.plotOffset.top);
+    zoomTouchstart: function(event) {
+		event.preventDefault();
+		if (event.touches.length == 1) {
+			var priceGraph = this.graphs.price;
+			var offset = priceGraph.overlay.cumulativeOffset();
+			var pointer = {x: event.touches[0].pageX, y: event.touches[0].pageY};
+			var rx = (pointer.x - offset.left - priceGraph.plotOffset.left),
+			ry = (pointer.y - offset.top - priceGraph.plotOffset.top);
 			
 			var pos = {
 				x:  priceGraph.axes.x.p2d(rx),
@@ -272,6 +230,79 @@ var HumbleFinance = {
 			this.a = xAxis.p2d(Math.min(prevSelection.first.x, prevSelection.second.x));
 			this.b = xAxis.p2d(Math.max(prevSelection.first.x, prevSelection.second.x));
 		}
+	},
+	zoomTouchmove: function(event) {
+		//Event.stopObserving(price, 'touchmove', zoomTouchmove);
+		if (event.touches.length == 1) {
+			var priceGraph = this.graphs.price;
+			var offset = priceGraph.overlay.cumulativeOffset();
+			var pointer = {x: event.touches[0].pageX, y: event.touches[0].pageY};
+			var rx = (pointer.x - offset.left - priceGraph.plotOffset.left),
+			ry = (pointer.y - offset.top - priceGraph.plotOffset.top);
+			
+			var pos = {
+				x:  priceGraph.axes.x.p2d(rx),
+				x2: priceGraph.axes.x2.p2d(rx),
+				y:  priceGraph.axes.y.p2d(ry),
+				y2: priceGraph.axes.y2.p2d(ry),
+				relX: rx,
+				relY: ry,
+				absX: pointer.x,
+				absY: pointer.y
+			};
+			
+			priceGraph.hit(pos);
+		}
+		if (event.touches.length == 2) {
+			var x3 = event.touches[0].pageX,
+				x4 = event.touches[1].pageX;
+			
+			this.zoomTouch(this.x1, this.x2, x3, x4, this.a, this.b);
+		}
+	},
+	zoomTouch: function(xx1, xx2, yx1, yx2, a, b) {
+		if (yx1 == yx2) return
+		
+		x1 = Math.min(xx1, xx2);
+		x2 = Math.max(xx1, xx2);
+		x3 = Math.min(yx1, yx2);
+		x4 = Math.max(yx1, yx2);
+		
+		var price = this.graphs.price;
+		var offset = price.overlay.cumulativeOffset(),
+    		rx1 = price.axes.x.p2d(x1 - offset.left - price.plotOffset.left),
+			rx2 = price.axes.x.p2d(x2 - offset.left - price.plotOffset.left);
+		
+		var ra = rx1 - (x3 - offset.left - price.plotOffset.left) / price.plotWidth * (b - a) / (x4 - x3) * (x2 - x1);
+		var rb = rx2 + (1 - (x4 - offset.left - price.plotOffset.left) / price.plotWidth) * (b - a) / (x4 - x3) * (x2 - x1);
+		
+		// Set selection area object
+		var prevSelection = this.graphs.summary.prevSelection;
+		var area = {
+			x1: Math.max(0, ra),
+			y1: prevSelection.first.y,
+			x2: Math.min(this.priceData.length - 1, rb),
+			y2: prevSelection.second.y
+		};
+		
+		this.graphs.summary.setSelection(area);
+	},
+    /**
+     * Summary Graph Selection Observer
+     * 
+     * @param e MouseEvent
+     */
+    selectObserver: function (e) {
+            
+        var area = e.memo[0];
+        xmin = Math.floor(area.x1);
+        xmax = Math.ceil(area.x2);
+        
+        var newBounds = {'xmin': xmin, 'xmax': xmax, 'ymin': null, 'ymax': null};
+        
+        this.graphs.price = this.priceGraph(this.priceData.slice(xmin, xmax+1), newBounds);
+        
+        this.drawFlags();
     },
     
     /**
@@ -279,10 +310,8 @@ var HumbleFinance = {
      */
     reset: function () {
         this.graphs.price = this.priceGraph(this.priceData, this.bounds);
-        ///# remove volume chart
-        ///this.graphs.volume = this.volumeGraph(this.volumeData, this.bounds);
-        this.handles.left.hide();
-        this.handles.right.hide();
+      ///  this.handles.left.hide();
+      ///  this.handles.right.hide();
         this.handles.scroll.hide();
         
         this.drawFlags();
@@ -294,8 +323,8 @@ var HumbleFinance = {
     hideSelection: function () {
 
         // Hide handles
-        this.handles.left.hide();
-        this.handles.right.hide();
+     ///   this.handles.left.hide();
+     ///   this.handles.right.hide();
         this.handles.scroll.hide();
         
         // Clear selection
@@ -323,7 +352,7 @@ var HumbleFinance = {
         
         // Set positions
         var xPosLeft = Math.floor(graphOffset[0] + plotOffset.left + xaxis.d2p(x1) + (xaxis.d2p(x2) - xaxis.d2p(x1) - width)/2);
-        var yPos = Math.ceil(graphOffset[1] + graphHeight - 2);
+        var yPos = Math.ceil(graphOffset[1] - 2);
         
         this.handles.scroll.setStyle({position: 'absolute', left: xPosLeft+'px', top: yPos+'px', width: width+'px'});
         this.handles.scroll.show();
@@ -335,8 +364,9 @@ var HumbleFinance = {
      * @param e MouseEvent
      */
     scrollObserver: function (e) {
-        
-        var x = e.clientX;
+		e.preventDefault();
+		
+        var x = e.touches[0].pageX;
         var offset = this.handles.scroll.cumulativeOffset();
         var prevSelection = this.graphs.summary.prevSelection;
         
@@ -347,77 +377,8 @@ var HumbleFinance = {
          */
         var handleObserver = function (e) {
             
-            Event.stopObserving(document, 'mousemove', handleObserver);
-            
-            var deltaX = e.clientX - x;
-            var xAxis = this.graphs.summary.axes.x;
-            
-            var x1 = xAxis.p2d(Math.min(prevSelection.first.x, prevSelection.second.x) + deltaX);
-            var x2 = xAxis.p2d(Math.max(prevSelection.first.x, prevSelection.second.x) + deltaX);
-            
-            // Check and handle boundary conditions
-            if (x1 < this.bounds.xmin) {
-                x2 = this.bounds.xmin + (x2 - x1);
-                x1 = this.bounds.xmin;
-            }
-            if (x2 > this.bounds.xmax) {
-                x1 = this.bounds.xmax - (x2 - x1);
-                x2 = this.bounds.xmax;
-            }
-            
-            // Set selection area object
-            var area = {
-                x1: x1,
-                y1: prevSelection.first.y,
-                x2: x2,
-                y2: prevSelection.second.y
-            };
-            
-            // If selection varies from previous, set new selection
-            if (area.x1 != prevSelection.first.x) {
-                this.graphs.summary.setSelection(area);
-            }
-            
-            Event.observe(document, 'mousemove', handleObserver);
-        }.bind(this);
-        
-        /**
-         * End scroll observer to detach event listeners
-         * 
-         * @param e MouseEvent
-         */
-        function handleEndObserver (e) {
-            Event.stopObserving(document, 'mousemove', handleObserver);
-            Event.stopObserving(document, 'mouseup', handleEndObserver);
-        };
-        
-        // Attach scroll handle observers
-        Event.observe(document, 'mousemove', handleObserver);
-        Event.observe(document, 'mouseup', handleEndObserver);
-    },
-    
-    /**
-     * Begin scrolling observer
-     * 
-     * @param e MouseEvent
-     */
-    touchScrollObserver: function (e) {
-        ///##
-        e.preventDefault();try{
-        $('dateRange').update(e.touches[0].pageX);
-        var x = e.touches[0].pageX;
-        var offset = this.handles.scroll.cumulativeOffset();
-        var prevSelection = this.graphs.summary.prevSelection;
-        
-        /**
-         * Perform scroll on handle move, observer
-         * 
-         * @param e MouseEvent
-         */
-        var touchHandleObserver = function (e) {
-        	e.preventDefault();
-            $('dateRange').update(e.touches[0].pageX)
-            Event.stopObserving(document, 'touchmove', touchHandleObserver);
+            Event.stopObserving(document, 'touchmove', handleObserver);
+            ///Event.stopObserving(document, 'mousemove', handleObserver);
             
             var deltaX = e.touches[0].pageX - x;
             var xAxis = this.graphs.summary.axes.x;
@@ -448,22 +409,26 @@ var HumbleFinance = {
                 this.graphs.summary.setSelection(area);
             }
             
-            Event.observe(document, 'touchmove', touchHandleObserver);
+            ///Event.observe(document, 'mousemove', handleObserver);
+            Event.observe(document, 'touchmove', handleObserver);
         }.bind(this);
-        
         /**
          * End scroll observer to detach event listeners
          * 
          * @param e MouseEvent
          */
-        function touchHandleEndObserver (e) {
-            Event.stopObserving(document, 'touchmove', touchHandleObserver);
-            Event.stopObserving(document, 'touchend', touchHandleEndObserver);
+        function handleEndObserver (e) {
+            ///Event.stopObserving(document, 'mousemove', handleObserver);
+            ///Event.stopObserving(document, 'mouseup', handleEndObserver);
+            Event.stopObserving(document, 'touchmove', handleObserver);
+            Event.stopObserving(document, 'touchstop', handleEndObserver);
         };
         
         // Attach scroll handle observers
-        Event.observe(document, 'touchmove', touchHandleObserver);
-        Event.observe(document, 'touchend', touchHandleEndObserver);}catch(e){alert(e)}
+        ///Event.observe(document, 'mousemove', handleObserver);
+        ///Event.observe(document, 'mouseup', handleEndObserver);
+        Event.observe(document, 'touchmove', handleObserver);
+        Event.observe(document, 'touchend', handleEndObserver);
     },
     
     /**
@@ -588,15 +553,15 @@ var HumbleFinance = {
      * @param e MouseEvent
      */
     positionZoomHandles: function (e) {
-        
+        return
         var x1 = e.memo[0].x1;
         var x2 = e.memo[0].x2;
         var xaxis = e.memo[1].axes.x;
         var plotOffset = e.memo[1].plotOffset;
         var height = this.containers.summary.getHeight();
         var offset = this.containers.summary.positionedOffset();
-        this.handles.left.show();
-        var dimensions = this.handles.left.getDimensions();
+      ///  this.handles.left.show();
+      ///  var dimensions = this.handles.left.getDimensions();
         
         // Set positions
         var xPosOne = Math.floor(offset[0]+plotOffset.left+xaxis.d2p(x1)-dimensions.width/2+1);
@@ -618,47 +583,6 @@ var HumbleFinance = {
      */
     clearHit: function(e) {
         this.graphs.price.clearHit();//.mouseTrack.hide();
-        ///# remove volume chart
-        ///this.graphs.volume.clearHit();
-    },
-    
-    /**
-     * Observer for volume hit to set price hit
-     * 
-     * @param e MouseEvent
-     */
-    volumeHitObserver: function (e) {
-        
-        // Hide mouse track on volume graph
-        ///# remove volume chart
-        ///this.graphs.volume.mouseTrack.hide();
-        
-        // Display hit on price graph
-        var point = this.priceData[e.memo[0].x];
-        ///# remove volume chart
-        ///Event.stopObserving(this.containers.volume, 'flotr:hit');
-        this.doHit(this.graphs.price, point, this.containers.volume);
-        ///# remove volume chart
-        ///Event.observe(this.containers.volume, 'flotr:hit', this.volumeHitObserver.bind(this));
-    },
-    
-    /**
-     * Observer for price hit to set volume hit
-     * 
-     * @param e MouseEvent
-     */
-    priceHitObserver: function (e) {
-        
-        // Display hit on volume graph
-        ///# remove volume chart
-        ///var point = this.volumeData[e.memo[0].x];
-        Event.stopObserving(this.containers.price, 'flotr:hit');
-        ///# remove volume chart
-        ///this.doHit(this.graphs.volume, point, this.containers.price);
-        Event.observe(this.containers.price, 'flotr:hit', this.priceHitObserver.bind(this));
-        
-        // Hide mouse track on volume graph
-        ///this.graphs.volume.mouseTrack.hide();
     },
     
     /**
@@ -806,7 +730,7 @@ var HumbleFinance = {
                 lines: {show: true, fill: true, fillOpacity: .1, lineWidth: 1},
                 yaxis: {min: ymin, max: ymax, autoscaleMargin: .5, showLabels: false, tickDecimals: 1},
                 xaxis: {min: xmin, max: xmax, noTicks: 5, tickFormatter: this.xTickFormatter, labelsAngle: 60},
-                grid: {verticalLines: false, horizontalLines: false, labelMargin: 0, outlineWidth: 0},
+                grid: {verticalLines: false, horizontalLines: false, labelMargin: 30, outlineWidth: 0},
                 selection: {mode: 'x'},
                 shadowSize: false,
                 HtmlText: true

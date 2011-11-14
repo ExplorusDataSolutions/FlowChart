@@ -11,6 +11,9 @@
 .x-list .x-list-item .x-list-item-body .title a {
 	font-size: 18px;
 }
+.x-list .x-list-item .x-list-item-body .title strong a {
+	font-weight: bold;
+}
 
 .x-list .x-list-item .x-list-item-body .info {
 	height: 30px;
@@ -49,4 +52,19 @@
 	text-shadow: rgba(0, 0, 0, 0.5) 0 -0.08em 0;
 	border-top-color: #084B9B;
 	border-bottom-color: #021022;
+}
+
+
+#comp-chart {
+	background-image: -webkit-gradient(linear,10% 0%, 0% 100%, from(#4a4c47), to(#020202), color-stop(0.5,#282826));
+}
+#chart-container {
+	border: 1px solid #888
+}
+
+.credit {
+	color: orange;
+	font-size: 12px;
+	margin: 55px auto -10px;
+	text-align: right;
 }

@@ -57,6 +57,12 @@ app.models.Station = Ext.regModel("app.models.Station", {
 				}
 				return hasdata;
 			}
+		},
+		{name: "visited",
+			convert: function(value, record) {
+				var station = record.get('station');
+				return app.stores.history.getByStation(station);
+			}
 		}
     ]
 });
@@ -181,6 +187,47 @@ Ext.data.MyLocalStorageProxy = Ext.extend(Ext.data.WebStorageProxy, {
 Ext.data.ProxyMgr.registerType('mylocalstorage', Ext.data.MyLocalStorageProxy);
 
 
+Ext.regModel('app.models.history', {
+    fields: [
+		{name: "station", type: "string", index: 0, mapping: function(obj){return obj[0]}},
+		{name: "visited", type: "date", index: 1, mapping: function(obj){return obj[1]}}
+    ]
+});
+app.stores.history = new Ext.data.Store({
+    model:'app.models.history',
+	proxy: {
+		type: 'mylocalstorage',
+		id: 'stations-history'
+	},
+	stationsMap: null,
+	getByStation: function(station) {
+		if (this.stationsMap == null) {
+			var map = {}
+			this.load();
+			this.each(function(record, index) {
+				map[record.get('station')] = record;
+				record.needsAdd = true;
+			});
+			this.stationsMap = map;
+		}
+		return this.stationsMap[station]
+	},
+	setVisited: function(station) {
+		if (!this.stationsMap[station]) {
+			var	Model = this.model,
+				values = {
+					station: station,
+					visited: (new Date()).dateFormat('Y-m-d H:i:s'),
+				};
+			var record = new Model(values);
+			this.stationsMap[station] = record;
+			this.add(record);
+		}
+		this.sync();
+	}
+});
+
+
 app.stores.stations = new Ext.data.Store({
     model: "app.models.Station",
     sorters: 'station',
@@ -196,13 +243,59 @@ app.stores.stations = new Ext.data.Store({
 		type: 'mylocalstorage',
 		id: 'stations'
 	},
+	unloadForGoodPerformance: function() {
+		console.log('store.unloadForGoodPerformance');
+		
+		this.filterBy(function(){
+			return false;
+		});
+	},
+	statusFilters: {},
+	loadStationListFromLastStatus: function() {
+		console.log('store.loadStationListFromLastStatus');
+		
+		var store = this;
+		
+		if (store.isFiltered() === false && store.getCount() == 0) {
+			return this.loadStationListFromLocal();
+		}
+		
+		store.filterBy(function(item, key){
+			for (var filterFnIdentifier in store.statusFilters) {
+				var filterFn = store.statusFilters[filterFnIdentifier];
+				if (filterFn(item, key) === false) {
+					return false;
+				}
+			}
+			return true;
+		});
+	},
+	loadStationListFromLocal: function() {
+		console.log('store.loadStationListFromLocal');
+		
+		var store = this;
+		store.load();
+		
+		if (0 == store.getCount()) {
+			confirm(
+				'Load stations right away? If it fails within 30 seconds, please try Refresh button with more time',  // message
+				function(button) {
+					if (button == 1) {// 1 for OK
+						store.loadStationListFromServer(30);
+					}
+				},
+				'Local data not detected',	// title
+				'Ok,Cancel'				// so is default
+			);
+		}
+	},
 	loadStationListFromServer: function(timeoutSeconds) {
 		timeoutSeconds = timeoutSeconds || 30;
 		this.removeAll();
+		this.clearFilter();
 		
 		var proxy = new Ext.data.AjaxProxy({
 			url: 'http://www.albertawater.com/awp/api/realtime/stations',
-			//url: 'http://localhost/iphone/test.html',
 			timeout: timeoutSeconds * 1000,
 			reader: new Ext.data.JsonReader({
 				model: app.models.Station
@@ -213,6 +306,8 @@ app.stores.stations = new Ext.data.Store({
 		
 		proxy.read(new Ext.data.Operation({action: 'read'}), function(operation) {
 			var records = operation.getRecords();
+			records = records.slice(0, 100);
+			
 			if (typeof records == 'undefined') {
 				records = [];
 			}
@@ -225,10 +320,10 @@ app.stores.stations = new Ext.data.Store({
 			
 			Ext.getBody().mask('Saving into local storage...', 'x-mask-loading', false);
 			alert('Total ' + records.length + ' stations loaded');
-			try{
+			
 			this.proxy.clear();
 			this.loadRecords(records);
-			}catch(e){alert(e)}
+			
 			this.sync();//300 station need 15s, too slow
 			Ext.getBody().unmask();
 		}, this);

@@ -3,24 +3,30 @@ app.views.Viewport = Ext.extend(Ext.Panel, {
     layout: 'card',
     cardSwitchAnimation: 'slide',
     initComponent: function() {
-		try{
-		var aa=new app.views.StationChart()
-		}catch(e){alert('xx:'+e)}
 		//put instances of cards into app.views namespace
 		Ext.apply(app.views, {
+			layerChart: new app.views.LayerChart(),
 			stationList: new app.views.StationList(),
-			stationChart: aa,
-			//contactForm: new app.views.ContactForm()
 		});
+		
 		//put instances of cards into viewport
 		Ext.apply(this, {
 			items: [
 				app.views.stationList,
-				app.views.stationChart,
-				//app.views.contactForm,
+				app.views.layerChart,
 			]
 		});
 		
         app.views.Viewport.superclass.initComponent.apply(this, arguments);
-    }
+    },
+	initEvents: function() {
+        app.views.Viewport.superclass.initEvents.call(this);
+		
+		/*this.on('fterrender', function() {
+			app.stores.station.load();
+			app.views.layerChart.record = app.stores.station.getAt(0);
+			app.views.layerChart.layer = 'wd';
+			app.views.layerChart.renderChart();
+		});*/
+	}
 });

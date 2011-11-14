@@ -14,13 +14,16 @@
 	-->
     <script src="lib/touch/sencha-touch-debug-w-comments.js" type="text/javascript"></script>
 	
+	<script type="text/javascript" src="lib/lawnchair/adaptors/LawnchairAdaptorHelpers.js" charset="utf-8"></script>
+	<script type="text/javascript" src="lib/lawnchair/adaptors/DOMStorageAdaptor.js" charset="utf-8"></script>
+	<script type="text/javascript" src="lib/lawnchair/adaptors/WebkitSQLiteAdaptor.js" charset="utf-8"></script>
+	<script type="text/javascript" src="lib/lawnchair/Lawnchair.js" charset="utf-8"></script>
+	
 	<script type="text/javascript" src="app/app.js"></script>
 	<script type="text/javascript" src="app/views/Viewport.js"></script>
 	<script type="text/javascript" src="app/models/Station.js"></script>
-	<script type="text/javascript" src="app/models/Chart.js"></script>
 	<script type="text/javascript" src="app/views/StationList.js"></script>
-	<script type="text/javascript" src="app/views/StationChart.js"></script>
-	<script type="text/javascript" src="app/views/ContactForm.js"></script>
+	<script type="text/javascript" src="app/views/LayerChart.js"></script>
 	<script type="text/javascript" src="app/controllers/stations.js"></script>
 	
     <link href="lib/chart.css" rel="stylesheet" type="text/css" />
@@ -29,9 +32,11 @@
 	<script type="text/javascript" src="lib/base64.js"></script>
 	<script type="text/javascript" src="lib/flotr/prototype/lib/canvas2image.js"></script>
 	<script type="text/javascript" src="lib/flotr/prototype/lib/canvastext.js"></script>	
-	<script type="text/javascript" src="lib/flotr/prototype/flotr.js"></script>
-	<script type="text/javascript" src="lib/chart.js"></script>
-	<script type="text/javascript" src="lib/chart_testdata.js"></script>
+	<!--script type="text/javascript" src="lib/flotr/prototype/flotr.js"></script-->
+	<script type="text/javascript" src="flotr/flotr.debug-0.2.0-alpha.js"></script>
+	<!--script type="text/javascript" src="lib/chart.js"></script-->
+	<script type="text/javascript" src="chart.js"></script>
+	<!--script type="text/javascript" src="lib/chart_testdata.js"></script-->
 
 	<!-- iPad/iPhone specific css below, add after your main css >
 	<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />		

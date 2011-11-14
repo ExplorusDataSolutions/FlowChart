@@ -23,11 +23,13 @@ Ext.regApplication({
 			navigator.notification ? navigator.notification.alert(message) : alert(message);
 		}
 		
-		try {
-			this.views.viewport = new this.views.Viewport();
-		} catch(e) {
-			alert('Error when new viewport:' + e)
+		window.showEvent = function(eventDescription) {
+			console.log(eventDescription);
 		}
+		
+		
+		this.views.viewport = new this.views.Viewport();
+		
 		
 		/**
 		 * AjaxProxy usage example 1

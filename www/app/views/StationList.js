@@ -1,4 +1,5 @@
 app.views.StationList = Ext.extend(Ext.TabPanel, {
+	id: 'view-station-list',
 	tabBar: {
 		dock: 'bottom',
 		layout: {
@@ -9,7 +10,7 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 	ui: 'light',
 	cardSwitchAnimation: {
 		type: 'cube',
-		//cover: true
+		//cover: true 	// cover means what?
 	},
 	defaults: {
 		scroll: 'vertical'
@@ -23,38 +24,13 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		dockedItems: [{
 			xtype: 'toolbar',
 			items: [{
+				id: 'station-search',
 				xtype: 'searchfield',
 				placeHolder: 'Search',
-				name: 'keyword',
-				listeners: {
-					change: function() {
-						//alert(this.getValue())
-					},
-					keyup: function() {
-						var store = app.stores.stations,
-							keyword = this.getValue().toLowerCase();
-						
-						store.filterBy(function(item, key){
-							return item.get('station').toLowerCase().indexOf(keyword) != -1;
-						});
-					}
-				}
+				name: 'keyword'
 			}, {
-				//text: 'Refresh',
+				id: 'station-refresh',
 				iconCls: 'refresh',
-				handler: function() {
-					confirm(
-						'Load stations from server? Timeout is extended to 180 seconds',  // message
-						function(button) {
-							if (button == 1) {// 1 for OK
-								var store = app.stores.stations;
-								store.loadStationListFromServer(180);
-							}
-						},
-						'Refresh local data',	// title
-						'Ok,Cancel'				// so is default
-					);
-				},
 			}],
 			defaults: {
 				iconMask: true,
@@ -63,13 +39,16 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		}],
 		layout: 'fit',
 		items: [{
+			id: 'list-stations',
 			xtype: 'list',
 			store: app.stores.stations,
 			itemTpl: [
 				'<div>',
 					'<div class="title">',
 						'<span>{id}. </span>',
+						'<tpl if="visited"><strong></tpl>',
 						'<a class="', '<tpl if="hasdata">has-data</tpl>', '<tpl if="!hasdata">no-data</tpl>', '">{station}</a>',
+						'<tpl if="visited"></strong></tpl>',
 					'</div>',
 					'<div class="info ', '<tpl if="lonlat==true">has-location</tpl>', '<tpl if="lonlat==false">no-location</tpl>', '">',
 						'<table><tr><td>',
@@ -87,28 +66,6 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 			],
 			grouped: true,
 			indexBar: true,
-			listeners: {
-				itemtap: function(view, index, item, event) {
-					var el = event.target;
-					if (el.parentNode.className == 'layers') {
-						var record = this.store.getAt(index),
-							station = record.get('station'),
-							layer = el.innerHTML;
-						
-						// bold station name
-						Ext.query('div[class=title] > a', item)[0].setStyle('font-weight:bold');
-						app.views.stationChart.updateWithRecord(record, layer);
-						
-						Ext.dispatch({
-							controller: app.controllers.stations,
-							action: 'show',
-							animation: {type:'slide', direction:'left'}
-						});
-						
-						app.views.stationChart.getComponent('chart').renderChart(station, layer);
-					}
-				}
-			}
 			/*onItemDisclosure: function (record) {
 				Ext.dispatch({
 					controller: app.controllers.stations,
@@ -116,7 +73,7 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 					station: record.get('station'),
 				});
 			}*/
-		}],
+		}]
 	}, {
 		title: 'About',
 		html: '<h1>About Card</h1>',
@@ -133,27 +90,129 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		html: '<h1>Settings Card</h1>',
 		cls: 'card',
 		iconCls: 'settings'
+	}, {
+		title: 'More',
+		html: '<h1>More</h1>',
+		cls: 'card',
+		iconCls: 'more'
 	}],
-	
-    initComponent: function() {
-		// this is better than "var store = app.stores.stations"
-		var store = this.items[0].items[0].store;
+	initEvents: function() {
+        app.views.StationList.superclass.initEvents.call(this);
 		
-		store.load();
+		var me = this,
+			store = app.stores.stations;
 		
-		if (0 == store.getCount()) {
+		
+		/**
+		 * 当视图 station-list 被激活
+		 */
+		var comp = Ext.ComponentMgr.get('view-station-list');
+		comp.on('activate', function() {
+			console.log('view-station-list activate');
+			
+			setTimeout(function() {
+				store.loadStationListFromLastStatus();
+			}, 100);
+		});
+		
+		
+		/**
+		 * unload stations data, to make animation lightly
+		 */
+		var comp = Ext.ComponentMgr.get('card-stations');
+		comp.on('beforedeactivate', function() {
+			console.log('beforedeactivate, filterBy a function always return false instead of remove all data');
+			
+			store.unloadForGoodPerformance();
+		});
+		
+		
+		/**
+		 * when card switch back to stations list
+		 */
+		var comp = Ext.ComponentMgr.get('view-station-list');
+		comp.on('cardswitch', function(panel, newCard, oldCard, newIndex) {
+			if (newCard.id == 'card-stations') {
+				console.log('card-stations cardswitch back to stations list');
+				
+				// timeout is necessary for cube animation
+				setTimeout(function() {
+					store.loadStationListFromLastStatus();
+				}, 100);
+			}
+		});
+		
+		
+		/**
+		 * click a layer to show chart
+		 */
+		var comp = Ext.ComponentMgr.get('list-stations');
+		comp.on('itemtap', function(view, index, item, event) {
+			var el = event.target;
+			
+			if (el.parentNode.className == 'layers') {
+				var record = store.getAt(index),
+					layer = el.innerHTML,
+					hasRealtimeData = el.className == 'has-data';
+				
+				if (!hasRealtimeData) {
+					confirm('No real-time data for "' + layer + '"',
+						function(button) {
+							if (button == 1) {// 1 for OK
+								me.showChart(record, layer);
+							}
+						}
+					);
+				}
+				if (hasRealtimeData) {
+					me.showChart(record, layer);
+				}
+			}
+		});
+		
+		/**
+		 * Search stations
+		 */
+		var comp = Ext.ComponentMgr.get('station-search');
+		comp.on('keyup', function() {
+			var keyword = this.getValue().toLowerCase();
+			
+			store.statusFilters['keyword'] = function(item, key){
+				return item.get('station').toLowerCase().indexOf(keyword) != -1;
+			};
+			store.loadStationListFromLastStatus();
+		});
+		
+		/**
+		 * Refresh stations
+		 */
+		var comp = Ext.ComponentMgr.get('station-refresh');
+		comp.on('tap', function() {
 			confirm(
-				'Load stations right away? If it fails within 30 seconds, please try Refresh button with more time',  // message
+				'Load stations from server? Timeout is extended to 180 seconds',  // message
 				function(button) {
 					if (button == 1) {// 1 for OK
-						store.loadStationListFromServer(30);
+						var store = app.stores.stations;
+						store.loadStationListFromServer(180);
 					}
 				},
-				'Local data not detected',	// title
+				'Refresh local data',	// title
 				'Ok,Cancel'				// so is default
 			);
-		}
+		});
+	},
+	showChart: function(record, layer) {
+		console.log('showChart called');
 		
-        app.views.StationList.superclass.initComponent.apply(this, arguments);
-    }
+		var store = app.stores.stations;
+		store.unloadForGoodPerformance();
+			
+		app.views.layerChart.updateWithRecord(record, layer);
+		
+		Ext.dispatch({
+			controller: app.controllers.stations,
+			action: 'show',
+			animation: {type:'slide', direction:'left'}
+		});
+	}
 });
