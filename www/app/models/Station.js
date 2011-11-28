@@ -200,28 +200,34 @@ app.stores.history = new Ext.data.Store({
 		id: 'stations-history'
 	},
 	stationsMap: null,
+	setStationMap: function() {
+		var map = {}
+		this.load();
+		this.each(function(record, index) {
+			map[record.get('station')] = record;
+			record.needsAdd = true;
+		});
+		this.stationsMap = map;
+	},
 	getByStation: function(station) {
 		if (this.stationsMap == null) {
-			var map = {}
-			this.load();
-			this.each(function(record, index) {
-				map[record.get('station')] = record;
-				record.needsAdd = true;
-			});
-			this.stationsMap = map;
+			this.setStationMap();
 		}
 		return this.stationsMap[station]
 	},
-	setVisited: function(station) {
+	setVisited: function(record) {
+		var station = record.get('station');
 		if (!this.stationsMap[station]) {
 			var	Model = this.model,
 				values = {
 					station: station,
 					visited: (new Date()).dateFormat('Y-m-d H:i:s'),
 				};
-			var record = new Model(values);
-			this.stationsMap[station] = record;
-			this.add(record);
+			var r = new Model(values);
+			this.stationsMap[station] = r;
+			this.add(r);
+			
+			record.set('visited', r);
 		}
 		this.sync();
 	}
@@ -246,29 +252,50 @@ app.stores.stations = new Ext.data.Store({
 	unloadForGoodPerformance: function() {
 		console.log('store.unloadForGoodPerformance');
 		
-		this.filterBy(function(){
-			return false;
-		});
+		this.cache = this.data.clone();
+		this.data.clear();
+		this.fireEvent('datachanged', this);
 	},
 	statusFilters: {},
+	queryBy: function(fn, scope) {
+		var kw = this.statusFilters['keyword'],
+			pkw = kw && kw.previousKeyword,
+			ckw = kw && kw.currentKeyword;
+		
+		if (pkw && ckw && pkw != ckw && ckw.indexOf(pkw) != -1) {
+			var data = this.data;
+		} else {
+			var data = this.snapshot || this.data;
+		}
+		if (kw && ckw) {
+			kw.previousKeyword = ckw;
+		}
+		return data.filterBy(fn, scope || this);
+    },
 	loadStationListFromLastStatus: function() {
 		console.log('store.loadStationListFromLastStatus');
 		
 		var store = this;
+		if (store.cache) {
+			store.data = store.cache;
+			delete store.cache;
+			store.fireEvent('datachanged', store);
+			return true;
+		}
 		
 		if (store.isFiltered() === false && store.getCount() == 0) {
 			return this.loadStationListFromLocal();
 		}
-		
+		var i=0
 		store.filterBy(function(item, key){
-			for (var filterFnIdentifier in store.statusFilters) {
+			for (var filterFnIdentifier in store.statusFilters) {i++
 				var filterFn = store.statusFilters[filterFnIdentifier];
 				if (filterFn(item, key) === false) {
 					return false;
 				}
 			}
 			return true;
-		});
+		});alert(i)
 	},
 	loadStationListFromLocal: function() {
 		console.log('store.loadStationListFromLocal');
@@ -306,7 +333,7 @@ app.stores.stations = new Ext.data.Store({
 		
 		proxy.read(new Ext.data.Operation({action: 'read'}), function(operation) {
 			var records = operation.getRecords();
-			records = records.slice(0, 100);
+			//records = records.slice(0, 100);
 			
 			if (typeof records == 'undefined') {
 				records = [];

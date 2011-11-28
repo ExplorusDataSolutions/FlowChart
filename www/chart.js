@@ -729,7 +729,7 @@ var HumbleFinance = {
             {
                 lines: {show: true, fill: true, fillOpacity: .1, lineWidth: 1},
                 yaxis: {min: ymin, max: ymax, autoscaleMargin: .5, showLabels: false, tickDecimals: 1},
-                xaxis: {min: xmin, max: xmax, noTicks: 5, tickFormatter: this.xTickFormatter, labelsAngle: 60},
+                xaxis: {min: xmin, max: xmax, noTicks: 4, tickFormatter: this.xTickFormatter, labelsAngle: 60},
                 grid: {verticalLines: false, horizontalLines: false, labelMargin: 30, outlineWidth: 0},
                 selection: {mode: 'x'},
                 shadowSize: false,

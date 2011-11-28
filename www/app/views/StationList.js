@@ -50,29 +50,26 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 						'<a class="', '<tpl if="hasdata">has-data</tpl>', '<tpl if="!hasdata">no-data</tpl>', '">{station}</a>',
 						'<tpl if="visited"></strong></tpl>',
 					'</div>',
-					'<div class="info ', '<tpl if="lonlat==true">has-location</tpl>', '<tpl if="lonlat==false">no-location</tpl>', '">',
-						'<table><tr><td>',
-						'<tpl if="lonlat"><div class="lonlat">{lon}, {lat}</div></tpl>',
-						'<div class="layers">',
-							'<tpl for="layers">',
-								'<tpl if="values[1]"><a class="has-data">{0}<a></tpl>',
-								'<tpl if="!values[1]"><a class="no-data">{0}<a></tpl>',
-								'<tpl if="xindex!=xcount"><a class="no-data">&nbsp;- </a></tpl>',
-							'</tpl>',
-						'</div>',
-						'</td></tr></table>',
-					'</div>',
+//					'<div class="info ', '<tpl if="lonlat==true">has-location</tpl>', '<tpl if="lonlat==false">no-location</tpl>', '">',
+//						'<table><tr><td>',
+//						'<tpl if="lonlat"><div class="lonlat">{lon}, {lat}</div></tpl>',
+//						'<div class="layers">',
+//							'<tpl for="layers">',
+//								'<tpl if="values[1]"><a class="has-data">{0}<a></tpl>',
+//								'<tpl if="!values[1]"><a class="no-data">{0}<a></tpl>',
+//								'<tpl if="xindex!=xcount"><a class="no-data">&nbsp;- </a></tpl>',
+//							'</tpl>',
+//						'</div>',
+//						'</td></tr></table>',
+//					'</div>',
 				'</div>',
 			],
 			grouped: true,
 			indexBar: true,
-			/*onItemDisclosure: function (record) {
-				Ext.dispatch({
-					controller: app.controllers.stations,
-					action: 'show',
-					station: record.get('station'),
-				});
-			}*/
+			// Itemtap event will disable this automatically
+			onItemDisclosure: function (record) {alert('Oops')
+				app.views.stationList.showChart(record);
+			}
 		}]
 	}, {
 		title: 'About',
@@ -148,7 +145,9 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		 */
 		var comp = Ext.ComponentMgr.get('list-stations');
 		comp.on('itemtap', function(view, index, item, event) {
-			var el = event.target;
+			var record = store.getAt(index);
+			app.views.stationList.showChart(record);
+			/*var el = event.target;
 			
 			if (el.parentNode.className == 'layers') {
 				var record = store.getAt(index),
@@ -167,7 +166,7 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 				if (hasRealtimeData) {
 					me.showChart(record, layer);
 				}
-			}
+			}*/
 		});
 		
 		/**
@@ -177,10 +176,20 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		comp.on('keyup', function() {
 			var keyword = this.getValue().toLowerCase();
 			
-			store.statusFilters['keyword'] = function(item, key){
-				return item.get('station').toLowerCase().indexOf(keyword) != -1;
-			};
-			store.loadStationListFromLastStatus();
+			if (keyword.length == 0) {
+				delete store.statusFilters.keyword;
+				store.loadStationListFromLastStatus();
+			}
+			if (keyword.length > 2) {
+				var filters = store.statusFilters,
+					previousKeyword = filters['keyword'] && filters['keyword'].previousKeyword;
+				filters['keyword'] = function(item, key){
+					return item.get('station').toLowerCase().indexOf(keyword) != -1;
+				};
+				filters['keyword'].previousKeyword = previousKeyword;
+				filters['keyword'].currentKeyword = keyword;
+				store.loadStationListFromLastStatus();
+			}
 		});
 		
 		/**

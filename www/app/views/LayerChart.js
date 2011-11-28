@@ -1,6 +1,60 @@
 app.stores.chart = new Lawnchair({adaptor:'dom'})
 
 
+app.views.Select = Ext.extend(Ext.form.Select, {
+    // @private
+    getPicker: function() {
+        if (!this.picker) {
+            this.picker = new Ext.Picker({
+                slots: [{
+                    align       : 'center',
+                    name        : this.name,
+                    valueField  : this.valueField,
+                    displayField: this.displayField,
+                    value       : this.getValue(),
+                    store       : this.store
+                }],
+                listeners: {
+                    change: this.onPickerChange,
+                    scope: this
+                }
+            });
+        }
+
+        return this.picker;
+    },
+	// @private
+    getListPanel: function() {
+        if (!this.listPanel) {
+            this.listPanel = new Ext.Panel({
+                floating         : true,
+                stopMaskTapEvent : false,
+                hideOnMaskTap    : true,
+                cls              : 'x-select-overlay',
+                scroll           : 'vertical',
+                items: {
+                    xtype: 'list',
+                    store: this.store,
+                    itemId: 'list',
+                    scroll: false,
+                    itemTpl : [
+                        '<span class="x-list-label {cls}">{' + this.displayField + '}</span>',
+                        '<span class="x-list-selected"></span>'
+                    ],
+                    listeners: {
+                        select : this.onListSelect,
+                        scope  : this
+                    }
+                }
+            });
+        }
+
+        return this.listPanel;
+    },
+});
+Ext.reg('app.views.Selectfield', app.views.Select);
+
+
 app.views.LayerChart = Ext.extend(Ext.Panel, {
 	fullscreen: true,
     dockedItems: [{
@@ -15,15 +69,26 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 			text: 'Back',
 			ui: 'back'
 		}, {
-			id: 'comp-chart-title',
-			text: 'View chart'
+		//	id: 'comp-chart-title',
+		//	text: 'View chart'
+		//}, {
+			id: 'comp-chart-layers',
+			width: 200,
+			xtype: 'app.views.Selectfield',
+			name: 'layerlist',	// important for the select list to work properly on iPhone
+			options: [{
+				value: '',
+				text: '- Select layers -'
+			}],
 		}]
     }],
     items: [{
 		id: 'comp-chart',
 		xtype: 'component',	// important for auto max
-		style: 'height: 100%; padding: 20px',
-		html: ['<div id="chart-container"></div>',
+		style: 'height: 100%; padding: 10px 20px',
+		html: [
+			'<div id="chart-title"></div>',
+			'<div id="chart-container"></div>',
 			'<div class="credit">Data from Alberta Environment</div>',
 			'<img height="50" src="css/images/logo-tesera.png" />'
 		]
@@ -60,17 +125,33 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 			console.log('view-chart activate');
 			me.renderChart();
 		});
+		
+		
+		/**
+		 * when layers select list is done
+		 */
+		var comp = Ext.ComponentMgr.get('comp-chart-layers');
+		comp.on('change', function(select, value) {
+			this.layer = value;
+			this.renderChart();
+		}, this);
 	},
 	renderChart: function() {
-		var record = this.record,
-			layer = this.layer || 'wd',
-			station = record ? record.get('station') : 'Abee AGDM',
-			cacheKey = station + '-' + layer,
-			size = Ext.get('comp-chart').getSize(),
-			summaryHeight = 50, adjust = 130;
-		
+		var size = Ext.get('comp-chart').getSize(),
+			summaryHeight = 50, adjust = 150;
 		Ext.get('chart-container').setStyle({height: (size.height - adjust) + 'px'});
 		
+		var record = this.record,
+			layers = record.get('layers');
+		if (!this.layer) {
+			var comp = Ext.ComponentMgr.get('comp-chart-layers');
+			comp.showComponent();
+			return true;
+		}
+		
+		var layer = this.layer,
+			station = record.get('station'),
+			cacheKey = station + '-' + layer;
 		var chart_data = [];
 		HumbleFinance.trackFormatter = function (obj) {
 			var x = Math.floor(obj.x);
@@ -163,14 +244,42 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 	},
     updateWithRecord: function(record, layer) {
 		this.record = record;
-		this.layer = layer;
+		
+		// allow this.layer to remeber last value
+		var layer = layer || this.layer;
+		if (layer) {
+			this.layer = '';
+			var layers = record.get('layers');
+			for (var i = 0; i < layers.length; i++) {
+				if (layer == layers[i][0]) {
+					this.layer = layer;
+					break;
+				}
+			}
+		}
+		
+		// fill the layers list for current record
+		var options = [],
+			layers = record.get('layers');
+		for (var i = 0; i < layers.length; i++) {
+			var layer = layers[i];
+			options.push({
+				value: layer[0],
+				text: layer[0] + (layer[2] == 0 ? '(no data)' : ''),
+				cls: layer[2] == 0 ? 'no-data' : 'has-data',
+			});
+		}
+		var comp = Ext.ComponentMgr.get('comp-chart-layers');
+		comp.setOptions(options);
+		
 	
 		var toolbar = this.getDockedItems()[0],
 			station = record.get('station');
 		//toolbar.setTitle(station + ' - ' + layer);
-		var comp = Ext.ComponentMgr.get('comp-chart-title');
-		comp.setText(station + ' - ' + layer);
+		//var comp = Ext.ComponentMgr.get('comp-chart-title');
+		//comp.setText(station + (layer ? ' - ' + layer : ''));
+		Ext.get('chart-title').update(station);
 		
-		app.stores.history.setVisited(station);
+		app.stores.history.setVisited(record);
     }
 });
