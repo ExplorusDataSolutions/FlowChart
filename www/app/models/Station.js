@@ -286,16 +286,16 @@ app.stores.stations = new Ext.data.Store({
 		if (store.isFiltered() === false && store.getCount() == 0) {
 			return this.loadStationListFromLocal();
 		}
-		var i=0
+		
 		store.filterBy(function(item, key){
-			for (var filterFnIdentifier in store.statusFilters) {i++
+			for (var filterFnIdentifier in store.statusFilters) {
 				var filterFn = store.statusFilters[filterFnIdentifier];
 				if (filterFn(item, key) === false) {
 					return false;
 				}
 			}
 			return true;
-		});alert(i)
+		});
 	},
 	loadStationListFromLocal: function() {
 		console.log('store.loadStationListFromLocal');

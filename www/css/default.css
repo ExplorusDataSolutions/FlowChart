@@ -1,6 +1,25 @@
 .card .x-panel-body {
    background-color: white;
 }
+
+/**
+ * new simply version
+ */
+.x-list .x-list-item .x-list-item-body span {
+	font-size: 12px;
+	color: #888;
+}
+.x-list .x-list-item .x-list-item-body {
+	color: #444;
+}
+.x-list .x-list-item .x-list-item-body .visited {
+	font-weight: bold
+}
+
+
+/**
+ * old complex version
+ */
 .x-list .x-list-item .x-list-item-body .title {
 	padding-right: 20px;
 	vertical-align: middle;
@@ -64,7 +83,7 @@
 
 
 #chart-title {
-	text-align: center;
+	text-align: right;
 	color: orange;
 }
 #comp-chart {
@@ -76,7 +95,7 @@
 
 .credit {
 	color: orange;
-	font-size: 12px;
-	margin: 55px auto -10px;
+	font-size: 16px;
+	margin: 75px 5px -30px;
 	text-align: right;
 }

@@ -16,7 +16,8 @@ app.views.Select = Ext.extend(Ext.form.Select, {
                 }],
                 listeners: {
                     change: this.onPickerChange,
-                    scope: this
+                    scope: this,
+					cancel: this.onPickerCancel,
                 }
             });
         }
@@ -50,6 +51,9 @@ app.views.Select = Ext.extend(Ext.form.Select, {
         }
 
         return this.listPanel;
+    },
+	onPickerCancel: function(picker) {
+		this.fireEvent('cancel', this);
     },
 });
 Ext.reg('app.views.Selectfield', app.views.Select);
@@ -90,7 +94,7 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 			'<div id="chart-title"></div>',
 			'<div id="chart-container"></div>',
 			'<div class="credit">Data from Alberta Environment</div>',
-			'<img height="50" src="css/images/logo-tesera.png" />'
+			'<img height="50" src="css/images/logo-ltdf.png" />'
 		]
 	}],
 	initEvents: function() {
@@ -135,6 +139,24 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 			this.layer = value;
 			this.renderChart();
 		}, this);
+		
+		
+		/**
+		 * when layers select is cancelled
+		 */
+		var comp = Ext.ComponentMgr.get('comp-chart-layers');
+		comp.on('cancel', function(select) {
+			if ('' == select.getValue()) {
+				var el = Ext.get('chart-container');
+				el.dom.innerHTML = '';
+				
+				Ext.dispatch({
+					controller: app.controllers.stations,
+					action: 'index',
+					animation: {type:'slide', direction:'right'}
+				});
+			}
+		}, this);
 	},
 	renderChart: function() {
 		var size = Ext.get('comp-chart').getSize(),
@@ -161,9 +183,26 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 			return text;
 		};
 		HumbleFinance.yTickFormatter = function (n) {
-			// not to display the max label
-			if (n == this.axes.y.max) {
-				return '<br />(m3/s)';
+			var y = this.axes.y,
+				ticks = y.ticks;
+			
+			if (ticks.length == 0) {
+				if (y.options.labelUnit) {
+					if (y.options.labelUnit.match(/\(.+\)/)) {
+						unit = ' ' + y.options.labelUnit;
+					} else {
+						unit = ' (' + y.options.labelUnit + ')';
+					}
+				} else {
+					unit = '';
+				}
+				ticks.push({
+					v: y.max,
+					label: '<br />' + y.min.toFixed(2) + ' - ' + y.max.toFixed(2) + unit
+				})
+			}
+			if (n == ticks[0].v) {
+				return '';
 			}
 			
 			return n;
@@ -177,6 +216,7 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 		app.stores.chart.get(cacheKey, function(cache) {
 			if (cache && cache.data && (new Date()).getTime() - cache.expireDate < 900000) {//15 minutes
 				chart_data = cache.data;
+				unit = cache.unit;
 				
 				// for basin_2_datatype_1_rathjasp, all data is -999
 				if (chart_data.length == 0) {
@@ -184,6 +224,9 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 				}
 				
 				HumbleFinance.init('chart-container', chart_data, {
+					yAxis: {
+						labelUnit: unit,
+					},
 					priceHeight: size.height - summaryHeight - adjust + 'px',
 					summaryHeight: summaryHeight + 'px',
 				});
@@ -206,7 +249,8 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 					success: function(response, opts) {
 						Ext.getBody().unmask();
 						
-						var obj = Ext.decode(response.responseText);
+						var obj = Ext.decode(response.responseText),
+							unit = obj.data[0].unit
 						try {
 							rawData = obj.data[0].readings.reverse();
 						} catch(e) {
@@ -223,6 +267,9 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 						}
 						
 						HumbleFinance.init('chart-container', chart_data, {
+							yAxis: {
+								labelUnit: unit,
+							},
 							priceHeight: size.height - summaryHeight - adjust + 'px',
 							summaryHeight: summaryHeight + 'px',
 						});
@@ -230,7 +277,8 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 						app.stores.chart.save({
 							key: cacheKey,
 							expireDate: (new Date()).getTime(),
-							data: chart_data
+							data: chart_data,
+							unit: unit
 						});
 					},
 					failure: function(response, opts) {

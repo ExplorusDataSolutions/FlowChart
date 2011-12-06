@@ -4,7 +4,8 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		dock: 'bottom',
 		layout: {
 			pack: 'center'
-		}
+		},
+		hidden: true,
 	},
 	fullscreen: true,
 	ui: 'light',
@@ -23,6 +24,7 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		cls: 'card',
 		dockedItems: [{
 			xtype: 'toolbar',
+			dock: 'top',
 			items: [{
 				id: 'station-search',
 				xtype: 'searchfield',
@@ -43,13 +45,15 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 			xtype: 'list',
 			store: app.stores.stations,
 			itemTpl: [
-				'<div>',
-					'<div class="title">',
-						'<span>{id}. </span>',
-						'<tpl if="visited"><strong></tpl>',
-						'<a class="', '<tpl if="hasdata">has-data</tpl>', '<tpl if="!hasdata">no-data</tpl>', '">{station}</a>',
-						'<tpl if="visited"></strong></tpl>',
-					'</div>',
+				// let it be as simple as possible
+				'<span>{id}. </span>',
+				'<a <tpl if="visited">class="visited"</tpl>>{station}</a>'
+		//		'<div class="title">',
+		//			'<span>{id}. </span>',
+		//			'<tpl if="visited"><strong></tpl>',
+		//			'<a class="', '<tpl if="hasdata">has-data</tpl>', '<tpl if="!hasdata">no-data</tpl>', '">{station}</a>',
+		//			'<tpl if="visited"></strong></tpl>',
+		//		'</div>',
 //					'<div class="info ', '<tpl if="lonlat==true">has-location</tpl>', '<tpl if="lonlat==false">no-location</tpl>', '">',
 //						'<table><tr><td>',
 //						'<tpl if="lonlat"><div class="lonlat">{lon}, {lat}</div></tpl>',
@@ -62,14 +66,13 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 //						'</div>',
 //						'</td></tr></table>',
 //					'</div>',
-				'</div>',
 			],
 			grouped: true,
 			indexBar: true,
 			// Itemtap event will disable this automatically
-			onItemDisclosure: function (record) {alert('Oops')
-				app.views.stationList.showChart(record);
-			}
+			//onItemDisclosure: function (record) {alert('Oops')
+			//	app.views.stationList.showChart(record);
+			//}
 		}]
 	}, {
 		title: 'About',

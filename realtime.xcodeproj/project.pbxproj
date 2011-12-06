@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00524038148685DD007BCF6E /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 005BC93614531CE60076D1FF /* Default@2x.png */; };
+		00524039148685E7007BCF6E /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 006952DF146856E700EACDAB /* Default.png */; };
 		005BC8FF14531CE60076D1FF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 005BC8FE14531CE60076D1FF /* Foundation.framework */; };
 		005BC90114531CE60076D1FF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 005BC90014531CE60076D1FF /* UIKit.framework */; };
 		005BC90314531CE60076D1FF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 005BC90214531CE60076D1FF /* CoreGraphics.framework */; };
@@ -35,9 +37,7 @@
 		005BC94814531DD60076D1FF /* www in Resources */ = {isa = PBXBuildFile; fileRef = 005BC94714531DD60076D1FF /* www */; };
 		006952E1146856E700EACDAB /* 57_57_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 006952DD146856E700EACDAB /* 57_57_Logo.png */; };
 		006952E2146856E700EACDAB /* 114_114_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 006952DE146856E700EACDAB /* 114_114_Logo.png */; };
-		006952E3146856E700EACDAB /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 006952DF146856E700EACDAB /* Default.png */; };
 		006952E4146856E700EACDAB /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 006952E0146856E700EACDAB /* Default@2x.png */; };
-		006952E61468578900EACDAB /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 005BC93614531CE60076D1FF /* Default@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -307,9 +307,9 @@
 				005BC94814531DD60076D1FF /* www in Resources */,
 				006952E1146856E700EACDAB /* 57_57_Logo.png in Resources */,
 				006952E2146856E700EACDAB /* 114_114_Logo.png in Resources */,
-				006952E3146856E700EACDAB /* Default.png in Resources */,
 				006952E4146856E700EACDAB /* Default@2x.png in Resources */,
-				006952E61468578900EACDAB /* Default@2x.png in Resources */,
+				00524038148685DD007BCF6E /* Default@2x.png in Resources */,
+				00524039148685E7007BCF6E /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

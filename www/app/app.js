@@ -5,8 +5,33 @@ Ext.regApplication({
         this.mainLaunch();
     },
     mainLaunch: function() {
-		if (navigator.notification) {
-			if (typeof device == 'undefined' || !this.launched) {return;}
+		if (typeof device == 'undefined') {
+			// This is, for example, Chrome
+			// Unfortunately, Android goes here also, to be researched
+		} else {
+			// Iphone goes here
+			// handle langched 2 times
+			if (!this.launched) {return;}
+			
+			// After using phonegap-1.2.0, Android goes here finally. device.name is GT_I9003
+			// window.alert(device.name)
+		}
+		
+		/**
+		 * strange that navigator.network is unavailable for Android
+		 */
+		if (typeof(navigator) != 'undefined' && typeof(navigator.network) != 'undefined') {
+			var states = {},
+				networkState = navigator.network.connection.type;
+			states[Connection.UNKNOWN]  = 'Unknown connection';
+			states[Connection.ETHERNET] = 'Ethernet connection';
+			states[Connection.WIFI]     = 'WiFi connection';
+			states[Connection.CELL_2G]  = 'Cell 2G connection';
+			states[Connection.CELL_3G]  = 'Cell 3G connection';
+			states[Connection.CELL_4G]  = 'Cell 4G connection';
+			states[Connection.NONE]     = 'No network connection';
+			
+			this.connectionType = states[networkState];
 		}
 		
 		var confirm = window.confirm;

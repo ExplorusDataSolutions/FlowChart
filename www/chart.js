@@ -686,7 +686,8 @@ var HumbleFinance = {
 					color: 'white',
 					min: ymin,
 					max: ymax, tickFormatter: this.yTickFormatter, noTicks: 5, autoscaleMargin: .5,  tickDecimals: 0,
-					margin: false	///#1
+					margin: false,	///#1
+					labelUnit: this.options.yAxis.labelUnit
 				},
 				xaxis: {min: xmin, max: xmax, showLabels: false},
 				grid: {
