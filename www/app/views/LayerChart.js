@@ -86,10 +86,11 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 			}],
 		}]
     }],
+    layout: 'fit',
     items: [{
 		id: 'comp-chart',
 		xtype: 'component',	// important for auto max
-		style: 'height: 100%; padding: 10px 20px',
+		style: 'width: 100%; height: 100%; padding: 10px 20px',
 		html: [
 			'<div id="chart-title"></div>',
 			'<div id="chart-container"></div>',
@@ -159,8 +160,15 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 		}, this);
 	},
 	renderChart: function() {
-		var size = Ext.get('comp-chart').getSize(),
-			summaryHeight = 50, adjust = 150;
+		if (!this.record)
+			return true;
+			
+		var size = Ext.get('comp-chart').getSize(), summaryHeight = 50, adjust;
+		if (Ext.Viewport.orientation == 'portrait') {
+			adjust = 150;
+		} else {
+			adjust = 250;
+		}
 		Ext.get('chart-container').setStyle({height: (size.height - adjust) + 'px'});
 		
 		var record = this.record,
@@ -293,6 +301,7 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
     updateWithRecord: function(record, layer) {
 		this.record = record;
 		
+		this.layer = '';
 		// allow this.layer to remeber last value
 		var layer = layer || this.layer;
 		if (layer) {
@@ -307,8 +316,10 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 		}
 		
 		// fill the layers list for current record
+		var comp = Ext.ComponentMgr.get('comp-chart-layers');
 		var options = [],
 			layers = record.get('layers');
+		comp.reset();
 		for (var i = 0; i < layers.length; i++) {
 			var layer = layers[i];
 			options.push({
@@ -317,7 +328,7 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 				cls: layer[2] == 0 ? 'no-data' : 'has-data',
 			});
 		}
-		var comp = Ext.ComponentMgr.get('comp-chart-layers');
+		
 		comp.setOptions(options);
 		
 	
@@ -329,5 +340,20 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 		Ext.get('chart-title').update(station);
 		
 		app.stores.history.setVisited(record);
+    },
+    onOrientationChange: function(orientation, w, h) {
+    	var comp = Ext.get('comp-chart');
+    	console.log('orientation = ' + orientation);
+    	if (orientation == 'portrait')  {
+    		var size = comp.getSize(), adjust = 150;
+    		Ext.get('chart-container').setStyle({ height: (size.height - adjust) + 'px' });
+    		console.log('chart height: ' + (size.height - adjust));
+    	} else {
+    		var size = comp.getSize(), adjust = 250;    		
+			Ext.get('chart-container').setStyle({ height: (size.height - adjust) + 'px' });
+			console.log('chart height: ' + (size.height - adjust));
+    	}
+    	this.renderChart();
+    	window.scrollTo(0, 1.5);
     }
 });

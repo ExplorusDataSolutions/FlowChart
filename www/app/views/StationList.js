@@ -69,6 +69,33 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 			],
 			grouped: true,
 			indexBar: true,
+			onIndex : function(record, target, index) {
+				var comp = Ext.ComponentMgr.get('list-stations');
+				var k = record.get("key").toLowerCase(), c = comp.store.getGroups(), h = c.length, j, d, b, a;
+				for (d = 0; d < h; d++) {
+					j = c[d];
+					a = comp.getGroupId(j);
+					if(a == k || a > k) {
+						b = a;
+						break
+					} else {
+						b = a
+					}
+				}
+				b = comp.getTargetEl().down(".x-group-" + a);
+				if (b) {
+					comp.scroller.scrollTo({
+						x : 0,
+						y : b.getOffsetsTo(comp.scrollEl)[1]
+					}, false, null, true)
+				}	
+			},
+			onLoad : function() {
+				var comp = Ext.ComponentMgr.get('list-stations');
+				if (comp.scroller.offsetBoundary.top == 0) {
+       				comp.scroller.updateBoundary();
+    			}
+			}
 			// Itemtap event will disable this automatically
 			//onItemDisclosure: function (record) {alert('Oops')
 			//	app.views.stationList.showChart(record);
@@ -171,6 +198,7 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 				}
 			}*/
 		});
+		comp.store.addListener('load', comp.onLoad);
 		
 		/**
 		 * Search stations
@@ -194,6 +222,11 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 				store.loadStationListFromLastStatus();
 			}
 		});
+		if (Ext.Viewport.orientation == 'portrait') {
+			comp.setWidth('250px');
+		} else {
+			comp.setWidth('400px');
+		}
 		
 		/**
 		 * Refresh stations
@@ -212,6 +245,9 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 				'Ok,Cancel'				// so is default
 			);
 		});
+		
+		//var comp = Ext.ComponentMgr.get('list-stations');
+		//comp.indexBar.addListener('index', this.index);
 	},
 	showChart: function(record, layer) {
 		console.log('showChart called');
@@ -226,5 +262,13 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 			action: 'show',
 			animation: {type:'slide', direction:'left'}
 		});
-	}
+	},
+	onOrientationChange : function(orientation, w, h) {
+		var comp = Ext.ComponentMgr.get('station-search');
+		if (orientation == 'portrait') {
+			comp.setWidth('250px');
+		} else {
+			comp.setWidth('400px');
+		}
+	}	
 });
