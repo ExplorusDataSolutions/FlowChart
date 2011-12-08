@@ -182,6 +182,26 @@ Ext.data.MyLocalStorageProxy = Ext.extend(Ext.data.WebStorageProxy, {
         //iPad bug requires that we remove the item before setting it
         obj.removeItem(key);
         obj.setItem(key, Ext.encode(rawRecords));
+    },
+    saveLayerNames: function(layerNames) {
+    	var obj = this.getStorageObject(),
+            key = this.id + '-layerNames';
+        
+        //iPad bug requires that we remove the item before setting it
+        obj.removeItem(key);
+        obj.setItem(key, Ext.encode(layerNames));
+    },
+    loadLayerNames: function() {
+    	var obj = this.getStorageObject(),
+            key = this.id + '-layerNames';
+            
+    	try{
+			var layerNames = Ext.decode(obj.getItem(key));
+		} catch(e) {
+			var layerNames = [];
+		}
+		
+		return layerNames;
     }
 });
 Ext.data.ProxyMgr.registerType('mylocalstorage', Ext.data.MyLocalStorageProxy);
@@ -249,6 +269,13 @@ app.stores.stations = new Ext.data.Store({
 		type: 'mylocalstorage',
 		id: 'stations'
 	},
+	loadLayerNames: function() {
+		this.layerNames = this.proxy.loadLayerNames();
+	},
+	saveLayerNames: function(layerNames) {
+		this.layerNames = layerNames;
+		this.proxy.saveLayerNames(layerNames);
+	},
 	unloadForGoodPerformance: function() {
 		console.log('store.unloadForGoodPerformance');
 		
@@ -301,6 +328,7 @@ app.stores.stations = new Ext.data.Store({
 		console.log('store.loadStationListFromLocal');
 		
 		var store = this;
+		store.loadLayerNames();
 		store.load();
 		
 		if (0 == store.getCount()) {
@@ -318,13 +346,19 @@ app.stores.stations = new Ext.data.Store({
 	},
 	loadStationListFromServer: function(timeoutSeconds) {
 		timeoutSeconds = timeoutSeconds || 30;
-		this.removeAll();
-		this.clearFilter();
+		
+		var store = this;
+		store.removeAll();
+		store.clearFilter();
 		
 		var proxy = new Ext.data.AjaxProxy({
 			url: 'http://www.albertawater.com/awp/api/realtime/stations',
 			timeout: timeoutSeconds * 1000,
 			reader: new Ext.data.JsonReader({
+				getData: function(data) {
+					store.saveLayerNames(data.layerNames);
+					return data.result;
+				},
 				model: app.models.Station
 			})
 		});

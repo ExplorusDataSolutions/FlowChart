@@ -320,11 +320,13 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 		var options = [],
 			layers = record.get('layers');
 		comp.reset();
+		
+		var layerNames = app.stores.stations.layerNames;
 		for (var i = 0; i < layers.length; i++) {
 			var layer = layers[i];
 			options.push({
 				value: layer[0],
-				text: layer[0] + (layer[2] == 0 ? '(no data)' : ''),
+				text: layerNames[layer[0]] + (layer[2] == 0 ? '(no data)' : ''),
 				cls: layer[2] == 0 ? 'no-data' : 'has-data',
 			});
 		}
