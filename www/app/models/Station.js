@@ -1,3 +1,18 @@
+app.models.Layer = Ext.regModel("app.models.Layer", {
+    fields: [
+    	{name: 'id'},
+    	{name: 'layerid',
+    		mapping: function(obj) {
+    			return obj[0];
+    		}},
+    	{name: 'description',
+    		mapping: function(obj) {
+    			return obj[1];
+    		}},
+    	{name: 'selected'}
+    ]
+});
+
 app.models.Station = Ext.regModel("app.models.Station", {
     fields: [
         {name: "id", type: "int"},
@@ -269,33 +284,39 @@ app.stores.stations = new Ext.data.Store({
 		type: 'mylocalstorage',
 		id: 'stations'
 	},
-	loadLayerNames: function() {
-		this.layerNames = this.proxy.loadLayerNames();
-		
-		this.setLayerNames(this.layerNames);
-	},
-	saveLayerNames: function(layerNames) {
-		this.layerNames = layerNames;
-		this.proxy.saveLayerNames(layerNames);
-		
-		this.setLayerNames(this.layerNames);
-	},
-	setLayerNames: function(layerNames) {
-		var comp = Ext.ComponentMgr.get('comp-station-layers');
-		comp.reset();
-		
-		var options = [], firstLayer;
-		for (var i = 0, layer; layer = layerNames[i]; i++) {
-			firstLayer = firstLayer || layer[0];
-			options.push({
-				value: layer[0],
-				text: layer[1]
-			});
+	getLayerNames: function() {
+		if (!this.layerNames) {
+			var layerNames = this.proxy.loadLayerNames(),
+				firstLayer;
+			
+			this.layerNames = [];
+			for (var i = 0, layer; layer = layerNames[i++];) {
+				firstLayer = firstLayer || layer[0];
+				
+				description = layer[1].toLowerCase()
+					.replace(/([a-z])([a-z0-9]*)/g, function(m, m1, m2) {
+						return m1.toLocaleUpperCase() + m2;
+					}).replace(/[^a-z0-9]+/ig, ' ');
+				
+				this.layerNames.push({
+					name: 'layer',
+					value: layer[0],
+					description: description,
+					label: '<span style="color:silver;font-weight:normal;text-align:right;width:30px;display:inline-block;padding-right:10px">'
+						+ i + '.</span>' + description,
+					checked: layer[0] == firstLayer,
+				});
+			}
 		}
 		
-		comp.setOptions(options);
-		comp.setValue(firstLayer);
-		this.setLayerFilter(firstLayer);
+		return this.layerNames;
+	},
+	saveLayerNames: function(layerNames) {
+		this.proxy.saveLayerNames(layerNames);
+	},
+	resetLayerNames: function() {
+		var comp = Ext.ComponentMgr.get('comp-station-layers');
+		comp.setText(comp.initialConfig.text);
 	},
 	unloadForGoodPerformance: function() {
 		console.log('store.unloadForGoodPerformance');
@@ -309,6 +330,10 @@ app.stores.stations = new Ext.data.Store({
 		var filters = this.statusFilters;
 		
 		filters['layer'] = function(item, key) {
+			if (filters['keyword'] && filters['keyword'].currentKeyword) {
+				return true;
+			}
+		
 			var layers = item.get('layers'),
 				i, layer;
 			for (i = 0; layer = layers[i]; i++) {
@@ -319,6 +344,15 @@ app.stores.stations = new Ext.data.Store({
 			return false;
 		};
 		filters['layer'].layerid = layerid;
+		
+		var comp = Ext.ComponentMgr.get('comp-station-layers'),
+			layerNames = this.getLayerNames();
+		layerNames.each(function(item, index) {
+			if (layerid == item.value) {
+				comp.setText('Current layer: ' + item.description);
+				return false;
+			}
+		});
 	},
 	queryBy: function(fn, scope) {
 		var kw = this.statusFilters['keyword'],
@@ -334,7 +368,7 @@ app.stores.stations = new Ext.data.Store({
 			kw.previousKeyword = ckw;
 		}
 		return data.filterBy(fn, scope || this);
-    },
+	},
 	loadStationListFromLastStatus: function() {
 		console.log('store.loadStationListFromLastStatus');
 		
@@ -347,7 +381,7 @@ app.stores.stations = new Ext.data.Store({
 		}
 		
 		if (store.isFiltered() === false && store.getCount() == 0) {
-			return this.loadStationListFromLocal();
+			store.loadStationListFromLocal();
 		}
 		
 		store.filterBy(function(item, key){
@@ -364,9 +398,7 @@ app.stores.stations = new Ext.data.Store({
 		console.log('store.loadStationListFromLocal');
 		
 		var store = this;
-		store.loadLayerNames();
 		store.load();
-		store.loadStationListFromLastStatus();
 		
 		if (0 == store.getCount()) {
 			confirm(
@@ -387,6 +419,7 @@ app.stores.stations = new Ext.data.Store({
 		var store = this;
 		store.removeAll();
 		store.clearFilter();
+		store.resetLayerNames();
 		
 		var proxy = new Ext.data.AjaxProxy({
 			url: 'http://www.albertawater.com/awp/api/realtime/stations',
@@ -404,7 +437,6 @@ app.stores.stations = new Ext.data.Store({
 		
 		proxy.read(new Ext.data.Operation({action: 'read'}), function(operation) {
 			var records = operation.getRecords();
-			//records = records.slice(0, 100);
 			
 			if (typeof records == 'undefined') {
 				records = [];

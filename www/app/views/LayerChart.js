@@ -73,9 +73,6 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 			text: 'Back',
 			ui: 'back'
 		}, {
-		//	id: 'comp-chart-title',
-		//	text: 'View chart'
-		//}, {
 			id: 'comp-chart-layers',
 			width: 200,
 			xtype: 'app.views.Selectfield',
@@ -321,7 +318,11 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 			layers = record.get('layers');
 		comp.reset();
 		
-		var layerNames = app.stores.stations.layerNames;
+		var layerNames = {};
+		app.stores.stations.getLayerNames().each(function(item, index) {
+			layerNames[item.value] = item.description;
+		});
+		
 		for (var i = 0; i < layers.length; i++) {
 			var layer = layers[i];
 			options.push({

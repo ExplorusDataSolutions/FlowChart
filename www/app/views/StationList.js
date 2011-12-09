@@ -25,7 +25,7 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		dockedItems: [{
 			xtype: 'toolbar',
 			dock: 'top',
-			items: [{
+			items: [{xtype: 'spacer'}, {
 				id: 'station-search',
 				xtype: 'searchfield',
 				placeHolder: 'Search',
@@ -33,7 +33,7 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 			}, {
 				id: 'station-refresh',
 				iconCls: 'refresh',
-			}],
+			}, {xtype: 'spacer'}],
 			defaults: {
 				iconMask: true,
 				ui: 'plain'
@@ -41,16 +41,10 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		}, {
 			xtype: 'toolbar',
 			dock: 'bottom',
-			items: [{
+			items: [{xtype: 'spacer'}, {
 				id: 'comp-station-layers',
-				xtype: 'selectfield',
-				placeHolder: 'Select layer to filter',
-				name: 'layer'
-			}],
-			defaults: {
-				iconMask: true,
-				ui: 'plain'
-			},
+				text: '- Select layer to filter -',
+			}, {xtype: 'spacer'}],
 		}],
 		layout: 'fit',
 		items: [{
@@ -190,26 +184,6 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		comp.on('itemtap', function(view, index, item, event) {
 			var record = store.getAt(index);
 			app.views.stationList.showChart(record);
-			/*var el = event.target;
-			
-			if (el.parentNode.className == 'layers') {
-				var record = store.getAt(index),
-					layer = el.innerHTML,
-					hasRealtimeData = el.className == 'has-data';
-				
-				if (!hasRealtimeData) {
-					confirm('No real-time data for "' + layer + '"',
-						function(button) {
-							if (button == 1) {// 1 for OK
-								me.showChart(record, layer);
-							}
-						}
-					);
-				}
-				if (hasRealtimeData) {
-					me.showChart(record, layer);
-				}
-			}*/
 		});
 		comp.store.addListener('load', comp.onLoad);
 		
@@ -223,8 +197,14 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 			if (keyword.length == 0) {
 				delete store.statusFilters.keyword;
 				store.loadStationListFromLastStatus();
+				
+				if (store.statusFilters['layer']) {
+					store.setLayerFilter(store.statusFilters['layer'].layerid);
+				}
 			}
 			if (keyword.length > 2) {
+				store.resetLayerNames();
+				
 				var filters = store.statusFilters,
 					previousKeyword = filters['keyword'] && filters['keyword'].previousKeyword;
 				filters['keyword'] = function(item, key){
@@ -266,10 +246,45 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		 *
 		 */
 		var comp = Ext.ComponentMgr.get('comp-station-layers');
-		comp.on('change', function(select, value) {
-			store.setLayerFilter(value);
-			store.loadStationListFromLastStatus();
-		}, this);
+		comp.handler = function(btn, event) {
+			if (!app.views.layerNameList) {
+				app.views.layerNameList = new Ext.Panel({
+					floating: true,
+					modal: true,
+					centered: false,
+					width: Ext.is.Phone ? 260 : 400,
+					height: Ext.is.Phone ? 320 : 400,
+					scroll: 'vertical',
+					items: [{
+						id: 'comp-layers-radio',
+						xtype: 'fieldset',
+						defaults: {
+							xtype: 'radiofield',
+							labelWidth: '75%',
+						},
+						items: app.stores.stations.getLayerNames(),
+					}]
+				});
+				
+				app.views.layerNameList.on('hide', function() {
+					var comp = Ext.ComponentMgr.get('comp-layers-radio'),
+						layerid;
+					
+					comp.items.each(function(item, index) {
+						if (item.isChecked()) {
+							layerid = item.getValue();
+							return false;
+						}
+					});
+					
+					store.setLayerFilter(layerid);
+					store.loadStationListFromLastStatus();
+				});
+			}
+			
+			app.views.layerNameList.setCentered(true);
+			app.views.layerNameList.show();
+		}
 	},
 	showChart: function(record, layer) {
 		console.log('showChart called');
