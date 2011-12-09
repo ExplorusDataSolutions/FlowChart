@@ -271,10 +271,31 @@ app.stores.stations = new Ext.data.Store({
 	},
 	loadLayerNames: function() {
 		this.layerNames = this.proxy.loadLayerNames();
+		
+		this.setLayerNames(this.layerNames);
 	},
 	saveLayerNames: function(layerNames) {
 		this.layerNames = layerNames;
 		this.proxy.saveLayerNames(layerNames);
+		
+		this.setLayerNames(this.layerNames);
+	},
+	setLayerNames: function(layerNames) {
+		var comp = Ext.ComponentMgr.get('comp-station-layers');
+		comp.reset();
+		
+		var options = [], firstLayer;
+		for (var i = 0, layer; layer = layerNames[i]; i++) {
+			firstLayer = firstLayer || layer[0];
+			options.push({
+				value: layer[0],
+				text: layer[1]
+			});
+		}
+		
+		comp.setOptions(options);
+		comp.setValue(firstLayer);
+		this.setLayerFilter(firstLayer);
 	},
 	unloadForGoodPerformance: function() {
 		console.log('store.unloadForGoodPerformance');
@@ -284,6 +305,21 @@ app.stores.stations = new Ext.data.Store({
 		this.fireEvent('datachanged', this);
 	},
 	statusFilters: {},
+	setLayerFilter: function(layerid) {
+		var filters = this.statusFilters;
+		
+		filters['layer'] = function(item, key) {
+			var layers = item.get('layers'),
+				i, layer;
+			for (i = 0; layer = layers[i]; i++) {
+				if (layer[0] == layerid) {
+					return true;
+				}
+			}
+			return false;
+		};
+		filters['layer'].layerid = layerid;
+	},
 	queryBy: function(fn, scope) {
 		var kw = this.statusFilters['keyword'],
 			pkw = kw && kw.previousKeyword,
@@ -330,6 +366,7 @@ app.stores.stations = new Ext.data.Store({
 		var store = this;
 		store.loadLayerNames();
 		store.load();
+		store.loadStationListFromLastStatus();
 		
 		if (0 == store.getCount()) {
 			confirm(

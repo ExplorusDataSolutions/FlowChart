@@ -38,6 +38,19 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 				iconMask: true,
 				ui: 'plain'
 			},
+		}, {
+			xtype: 'toolbar',
+			dock: 'bottom',
+			items: [{
+				id: 'comp-station-layers',
+				xtype: 'selectfield',
+				placeHolder: 'Select layer to filter',
+				name: 'layer'
+			}],
+			defaults: {
+				iconMask: true,
+				ui: 'plain'
+			},
 		}],
 		layout: 'fit',
 		items: [{
@@ -248,6 +261,15 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		
 		//var comp = Ext.ComponentMgr.get('list-stations');
 		//comp.indexBar.addListener('index', this.index);
+		
+		/**
+		 *
+		 */
+		var comp = Ext.ComponentMgr.get('comp-station-layers');
+		comp.on('change', function(select, value) {
+			store.setLayerFilter(value);
+			store.loadStationListFromLastStatus();
+		}, this);
 	},
 	showChart: function(record, layer) {
 		console.log('showChart called');
