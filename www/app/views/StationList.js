@@ -183,7 +183,8 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		var comp = Ext.ComponentMgr.get('list-stations');
 		comp.on('itemtap', function(view, index, item, event) {
 			var record = store.getAt(index);
-			app.views.stationList.showChart(record);
+			var layerid = store.statusFilters['layer'] ? store.statusFilters['layer'].layerid : 0;
+			app.views.stationList.showChart(record, layerid);
 		});
 		comp.store.addListener('load', comp.onLoad);
 		
@@ -239,11 +240,8 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 			);
 		});
 		
-		//var comp = Ext.ComponentMgr.get('list-stations');
-		//comp.indexBar.addListener('index', this.index);
-		
 		/**
-		 *
+		 * layer filter
 		 */
 		var comp = Ext.ComponentMgr.get('comp-station-layers');
 		comp.handler = function(btn, event) {
@@ -253,7 +251,7 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 					modal: true,
 					centered: false,
 					width: Ext.is.Phone ? 260 : 400,
-					height: Ext.is.Phone ? 320 : 400,
+					height: Ext.is.Phone ? 260 : 400,
 					scroll: 'vertical',
 					items: [{
 						id: 'comp-layers-radio',
@@ -265,34 +263,19 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 						items: app.stores.stations.getLayerNames(),
 					}]
 				});
-				
-				app.views.layerNameList.on('hide', function() {
-					var comp = Ext.ComponentMgr.get('comp-layers-radio'),
-						layerid;
-					
-					comp.items.each(function(item, index) {
-						if (item.isChecked()) {
-							layerid = item.getValue();
-							return false;
-						}
-					});
-					
-					store.setLayerFilter(layerid);
-					store.loadStationListFromLastStatus();
-				});
 			}
 			
 			app.views.layerNameList.setCentered(true);
 			app.views.layerNameList.show();
 		}
 	},
-	showChart: function(record, layer) {
+	showChart: function(record, layerid) {
 		console.log('showChart called');
 		
 		var store = app.stores.stations;
 		store.unloadForGoodPerformance();
 			
-		app.views.layerChart.updateWithRecord(record, layer);
+		app.views.layerChart.updateWithRecord(record, layerid);
 		
 		Ext.dispatch({
 			controller: app.controllers.stations,

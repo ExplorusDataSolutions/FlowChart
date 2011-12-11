@@ -289,10 +289,38 @@ app.stores.stations = new Ext.data.Store({
 			var layerNames = this.proxy.loadLayerNames(),
 				firstLayer;
 			
-			this.layerNames = [];
-			for (var i = 0, layer; layer = layerNames[i++];) {
-				firstLayer = firstLayer || layer[0];
+			function onLayerSelected(radio) {
+				var layerid = radio.value,
+					store = app.stores.stations;
 				
+				if (radio.lastStatus) {
+					var comp = Ext.ComponentMgr.get('hidden-layer-radio');
+					comp.check();
+					
+					store.resetLayerNames();
+					store.setLayerFilter(0);
+					store.loadStationListFromLastStatus(function() {
+						app.views.layerNameList.hide();
+					});
+				} else {
+					store.setLayerFilter(layerid);
+					store.loadStationListFromLastStatus(function() {
+						app.views.layerNameList.hide();
+					});
+				}
+				
+				radio.lastStatus = !radio.lastStatus;
+			}
+			
+			// This is a trick to make single click able to toggle radio on Android
+			this.layerNames = [{
+				id: 'hidden-layer-radio',
+				name: 'layer',
+				value: 0,
+				label: '',
+				hidden: true
+			}];
+			for (var i = 0, layer; layer = layerNames[i++];) {
 				description = layer[1].toLowerCase()
 					.replace(/([a-z])([a-z0-9]*)/g, function(m, m1, m2) {
 						return m1.toLocaleUpperCase() + m2;
@@ -304,7 +332,9 @@ app.stores.stations = new Ext.data.Store({
 					description: description,
 					label: '<span style="color:silver;font-weight:normal;text-align:right;width:30px;display:inline-block;padding-right:10px">'
 						+ i + '.</span>' + description,
-					checked: layer[0] == firstLayer,
+					listeners: {
+						check: onLayerSelected
+					}
 				});
 			}
 		}
@@ -330,6 +360,9 @@ app.stores.stations = new Ext.data.Store({
 		var filters = this.statusFilters;
 		
 		filters['layer'] = function(item, key) {
+			if (layerid == 0) {
+				return true;
+			}
 			if (filters['keyword'] && filters['keyword'].currentKeyword) {
 				return true;
 			}
@@ -348,7 +381,7 @@ app.stores.stations = new Ext.data.Store({
 		var comp = Ext.ComponentMgr.get('comp-station-layers'),
 			layerNames = this.getLayerNames();
 		layerNames.each(function(item, index) {
-			if (layerid == item.value) {
+			if (item.value != 0 && layerid == item.value) {
 				comp.setText('Current layer: ' + item.description);
 				return false;
 			}
@@ -369,7 +402,7 @@ app.stores.stations = new Ext.data.Store({
 		}
 		return data.filterBy(fn, scope || this);
 	},
-	loadStationListFromLastStatus: function() {
+	loadStationListFromLastStatus: function(callback) {
 		console.log('store.loadStationListFromLastStatus');
 		
 		var store = this;
@@ -393,6 +426,9 @@ app.stores.stations = new Ext.data.Store({
 			}
 			return true;
 		});
+		
+		// This is good for first visible check and later hide effect on Android 
+		callback && setTimeout(callback, 500);
 	},
 	loadStationListFromLocal: function() {
 		console.log('store.loadStationListFromLocal');

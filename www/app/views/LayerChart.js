@@ -156,9 +156,12 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 			}
 		}, this);
 	},
-	renderChart: function() {
+	renderChart: function() {alert('x')
 		if (!this.record)
 			return true;
+		
+		var el = Ext.get('chart-container');
+		el.dom.innerHTML = '';
 			
 		var size = Ext.get('comp-chart').getSize(), summaryHeight = 50, adjust;
 		if (Ext.Viewport.orientation == 'portrait') {
@@ -314,11 +317,10 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 		
 		// fill the layers list for current record
 		var comp = Ext.ComponentMgr.get('comp-chart-layers');
-		var options = [],
-			layers = record.get('layers');
 		comp.reset();
 		
-		var layerNames = {};
+		var layers = record.get('layers'),
+			options = [], layerNames = {};
 		app.stores.stations.getLayerNames().each(function(item, index) {
 			layerNames[item.value] = item.description;
 		});
@@ -329,9 +331,9 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 				value: layer[0],
 				text: layerNames[layer[0]] + (layer[2] == 0 ? '(no data)' : ''),
 				cls: layer[2] == 0 ? 'no-data' : 'has-data',
+				
 			});
 		}
-		
 		comp.setOptions(options);
 		
 	
