@@ -22,11 +22,8 @@ app.views.Viewport = Ext.extend(Ext.Panel, {
 	initEvents: function() {
         app.views.Viewport.superclass.initEvents.call(this);
 		
-		/*this.on('fterrender', function() {
-			app.stores.station.load();
-			app.views.layerChart.record = app.stores.station.getAt(0);
-			app.views.layerChart.layer = 'wd';
-			app.views.layerChart.renderChart();
-		});*/
+		/**
+		 * Customized codes if needed
+		 */
 	}
 });

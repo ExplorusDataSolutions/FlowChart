@@ -4,7 +4,7 @@ app.controllers.stations = new Ext.Controller({
             app.views.stationList, options.animation
         );
     },
-    show: function(options) {
+    showChart: function(options) {
 		app.views.viewport.setActiveItem(
 			app.views.layerChart, options.animation
 		);

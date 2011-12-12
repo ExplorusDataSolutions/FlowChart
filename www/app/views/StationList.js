@@ -178,7 +178,7 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		
 		
 		/**
-		 * click a layer to show chart
+		 * tap a station to show chart
 		 */
 		var comp = Ext.ComponentMgr.get('list-stations');
 		comp.on('itemtap', function(view, index, item, event) {
@@ -216,11 +216,11 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 				store.loadStationListFromLastStatus();
 			}
 		});
-		if (Ext.Viewport.orientation == 'portrait') {
+		/*if (Ext.Viewport.orientation == 'portrait') {
 			comp.setWidth('250px');
 		} else {
 			comp.setWidth('400px');
-		}
+		}*/
 		
 		/**
 		 * Refresh stations
@@ -279,16 +279,17 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		
 		Ext.dispatch({
 			controller: app.controllers.stations,
-			action: 'show',
+			action: 'showChart',
 			animation: {type:'slide', direction:'left'}
 		});
 	},
-	onOrientationChange : function(orientation, w, h) {
+	/*onOrientationChange : function(orientation, w, h) {
+		return
 		var comp = Ext.ComponentMgr.get('station-search');
 		if (orientation == 'portrait') {
 			comp.setWidth('250px');
 		} else {
 			comp.setWidth('400px');
 		}
-	}	
+	}*/
 });

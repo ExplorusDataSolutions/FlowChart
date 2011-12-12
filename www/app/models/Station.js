@@ -351,7 +351,7 @@ app.stores.stations = new Ext.data.Store({
 	unloadForGoodPerformance: function() {
 		console.log('store.unloadForGoodPerformance');
 		
-		this.cache = this.data.clone();
+		//this.cache = this.data.clone();
 		this.data.clear();
 		this.fireEvent('datachanged', this);
 	},
@@ -386,6 +386,15 @@ app.stores.stations = new Ext.data.Store({
 				return false;
 			}
 		});
+		var comp = Ext.ComponentMgr.get('comp-layers-radio');
+		if (comp) {	// if 'comp-layers-radio' has been created
+			comp.items.each(function(item, index) {
+				if (item.value == layerid) {
+					item.fieldEl.dom.checked = true;
+					return false;
+				}
+			});
+		}
 	},
 	queryBy: function(fn, scope) {
 		var kw = this.statusFilters['keyword'],
@@ -404,14 +413,15 @@ app.stores.stations = new Ext.data.Store({
 	},
 	loadStationListFromLastStatus: function(callback) {
 		console.log('store.loadStationListFromLastStatus');
+		window.scrollTo(0, 0);
 		
 		var store = this;
-		if (store.cache) {
+		/*if (store.cache) {
 			store.data = store.cache;
 			delete store.cache;
 			store.fireEvent('datachanged', store);
 			return true;
-		}
+		}*/
 		
 		if (store.isFiltered() === false && store.getCount() == 0) {
 			store.loadStationListFromLocal();

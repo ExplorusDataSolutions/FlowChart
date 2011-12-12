@@ -1,7 +1,7 @@
 Ext.regApplication({
     name: 'app',
     launch: function() {
-        this.launched = true;
+        this.launched = true;	// This will be also set to true after launch() is excuted
         this.mainLaunch();
     },
     mainLaunch: function() {

@@ -134,8 +134,11 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 		 */
 		var comp = Ext.ComponentMgr.get('comp-chart-layers');
 		comp.on('change', function(select, value) {
-			this.layer = value;
+			var layerid = value;
+			this.layer = layerid;
 			this.renderChart();
+			var store = app.stores.stations;
+			store.setLayerFilter(layerid);
 		}, this);
 		
 		
@@ -145,6 +148,13 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 		var comp = Ext.ComponentMgr.get('comp-chart-layers');
 		comp.on('cancel', function(select) {
 			if ('' == select.getValue()) {
+				var comp = Ext.ComponentMgr.get('comp-chart-layers');
+				comp.setOptions([{
+					value: '',
+					text: '- Select layers -'
+				}]);
+				select.setValue('');
+				
 				var el = Ext.get('chart-container');
 				el.dom.innerHTML = '';
 				
@@ -156,23 +166,21 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 			}
 		}, this);
 	},
-	renderChart: function() {alert('x')
+	renderChart: function() {
+		window.scrollTo(0, 0);
 		if (!this.record)
 			return true;
 		
 		var el = Ext.get('chart-container');
 		el.dom.innerHTML = '';
-			
-		var size = Ext.get('comp-chart').getSize(), summaryHeight = 50, adjust;
-		if (Ext.Viewport.orientation == 'portrait') {
-			adjust = 150;
-		} else {
-			adjust = 250;
-		}
+		
+		var size = Ext.get('comp-chart').getSize(),
+			summaryHeight = 50, adjust = 150;
 		Ext.get('chart-container').setStyle({height: (size.height - adjust) + 'px'});
 		
 		var record = this.record,
 			layers = record.get('layers');
+		
 		if (!this.layer) {
 			var comp = Ext.ComponentMgr.get('comp-chart-layers');
 			comp.showComponent();
@@ -320,7 +328,8 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 		comp.reset();
 		
 		var layers = record.get('layers'),
-			options = [], layerNames = {};
+			options = [],
+			layerNames = {};
 		app.stores.stations.getLayerNames().each(function(item, index) {
 			layerNames[item.value] = item.description;
 		});
@@ -331,34 +340,31 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 				value: layer[0],
 				text: layerNames[layer[0]] + (layer[2] == 0 ? '(no data)' : ''),
 				cls: layer[2] == 0 ? 'no-data' : 'has-data',
-				
 			});
+			this.layer && this.layer == layer[0] && comp.setValue(layerNames[layer[0]]);
 		}
 		comp.setOptions(options);
 		
-	
+		
 		var toolbar = this.getDockedItems()[0],
 			station = record.get('station');
-		//toolbar.setTitle(station + ' - ' + layer);
-		//var comp = Ext.ComponentMgr.get('comp-chart-title');
-		//comp.setText(station + (layer ? ' - ' + layer : ''));
 		Ext.get('chart-title').update(station);
 		
 		app.stores.history.setVisited(record);
     },
-    onOrientationChange: function(orientation, w, h) {
-    	var comp = Ext.get('comp-chart');
-    	console.log('orientation = ' + orientation);
-    	if (orientation == 'portrait')  {
-    		var size = comp.getSize(), adjust = 150;
-    		Ext.get('chart-container').setStyle({ height: (size.height - adjust) + 'px' });
-    		console.log('chart height: ' + (size.height - adjust));
-    	} else {
-    		var size = comp.getSize(), adjust = 250;    		
+	onOrientationChange: function(orientation, w, h) {
+		/*if (orientation == 'portrait')  {
+			var size = comp.getSize(), adjust = 150;
 			Ext.get('chart-container').setStyle({ height: (size.height - adjust) + 'px' });
 			console.log('chart height: ' + (size.height - adjust));
-    	}
-    	this.renderChart();
-    	window.scrollTo(0, 1.5);
+		} else {
+			var size = comp.getSize(), adjust = 250;    		
+			Ext.get('chart-container').setStyle({ height: (size.height - adjust) + 'px' });
+			console.log('chart height: ' + (size.height - adjust));
+		}*/
+		var me = this;
+		setTimeout(function() {
+			me.renderChart();
+		}, 500);
     }
 });
