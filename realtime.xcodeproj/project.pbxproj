@@ -34,10 +34,10 @@
 		0068677E1497E017001F5253 /* PhoneGap.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0068677D1497E017001F5253 /* PhoneGap.plist */; };
 		006867821497E017001F5253 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 006867811497E017001F5253 /* AppDelegate.m */; };
 		0068678D1497E1DD001F5253 /* www in Resources */ = {isa = PBXBuildFile; fileRef = 0068678C1497E1DD001F5253 /* www */; };
-		0068678F1497E3DD001F5253 /* 57_57_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0068678E1497E3DD001F5253 /* 57_57_Logo.png */; };
-		006867911497E3E1001F5253 /* 114_114_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 006867901497E3E1001F5253 /* 114_114_Logo.png */; };
-		006867931497E708001F5253 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 006867921497E708001F5253 /* Default@2x.png */; };
-		006867951497E70F001F5253 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 006867941497E70F001F5253 /* Default.png */; };
+		006867961497FA7D001F5253 /* 57_57_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0068678E1497E3DD001F5253 /* 57_57_Logo.png */; };
+		006867971497FA7F001F5253 /* 114_114_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 006867901497E3E1001F5253 /* 114_114_Logo.png */; };
+		006867981497FA82001F5253 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 006867941497E70F001F5253 /* Default.png */; };
+		006867991497FA85001F5253 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 006867921497E708001F5253 /* Default@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -306,10 +306,10 @@
 				0068677C1497E017001F5253 /* Capture.bundle in Resources */,
 				0068677E1497E017001F5253 /* PhoneGap.plist in Resources */,
 				0068678D1497E1DD001F5253 /* www in Resources */,
-				0068678F1497E3DD001F5253 /* 57_57_Logo.png in Resources */,
-				006867911497E3E1001F5253 /* 114_114_Logo.png in Resources */,
-				006867931497E708001F5253 /* Default@2x.png in Resources */,
-				006867951497E70F001F5253 /* Default.png in Resources */,
+				006867961497FA7D001F5253 /* 57_57_Logo.png in Resources */,
+				006867971497FA7F001F5253 /* 114_114_Logo.png in Resources */,
+				006867981497FA82001F5253 /* Default.png in Resources */,
+				006867991497FA85001F5253 /* Default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,7 +399,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				KEEP_PRIVATE_EXTERNS = NO;
 				PROVISIONING_PROFILE = "28FAA988-CFF5-4862-BC6C-5C38FC3A7296";
 				SDKROOT = iphoneos;
@@ -420,7 +420,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				KEEP_PRIVATE_EXTERNS = NO;
 				PROVISIONING_PROFILE = "28FAA988-CFF5-4862-BC6C-5C38FC3A7296";
 				SDKROOT = iphoneos;
@@ -497,7 +497,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				KEEP_PRIVATE_EXTERNS = NO;
 				PROVISIONING_PROFILE = "28FAA988-CFF5-4862-BC6C-5C38FC3A7296";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
