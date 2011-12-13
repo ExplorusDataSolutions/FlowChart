@@ -13,7 +13,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "005BC8F914531CE60076D1FF"
+               BlueprintIdentifier = "0068673C1497E017001F5253"
                BuildableName = "realtime.app"
                BlueprintName = "realtime"
                ReferencedContainer = "container:realtime.xcodeproj">
@@ -31,7 +31,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "005BC8F914531CE60076D1FF"
+            BlueprintIdentifier = "0068673C1497E017001F5253"
             BuildableName = "realtime.app"
             BlueprintName = "realtime"
             ReferencedContainer = "container:realtime.xcodeproj">
@@ -43,13 +43,13 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "AdHoc"
+      buildConfiguration = "Ad Hoc"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "005BC8F914531CE60076D1FF"
+            BlueprintIdentifier = "0068673C1497E017001F5253"
             BuildableName = "realtime.app"
             BlueprintName = "realtime"
             ReferencedContainer = "container:realtime.xcodeproj">
@@ -67,7 +67,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "005BC8F914531CE60076D1FF"
+            BlueprintIdentifier = "0068673C1497E017001F5253"
             BuildableName = "realtime.app"
             BlueprintName = "realtime"
             ReferencedContainer = "container:realtime.xcodeproj">

@@ -166,7 +166,7 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 			}
 		}, this);
 	},
-	renderChart: function() {
+	renderChart: function(orientation) {
 		window.scrollTo(0, 0);
 		if (!this.record)
 			return true;
@@ -175,7 +175,8 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 		el.dom.innerHTML = '';
 		
 		var size = Ext.get('comp-chart').getSize(),
-			summaryHeight = 50, adjust = 150;
+			summaryHeight = orientation == 'landscape' ? 25 : 50,
+			adjust = 150;
 		Ext.get('chart-container').setStyle({height: (size.height - adjust) + 'px'});
 		
 		var record = this.record,
@@ -326,6 +327,13 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 		// fill the layers list for current record
 		var comp = Ext.ComponentMgr.get('comp-chart-layers');
 		comp.reset();
+		if (!this.layer) {
+			comp.setOptions([{
+				value: '',
+				text: '- Select layers -'
+			}]);
+			Ext.ComponentMgr.get('comp-chart-layers').setValue('');
+		}
 		
 		var layers = record.get('layers'),
 			options = [],
@@ -364,7 +372,7 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 		}*/
 		var me = this;
 		setTimeout(function() {
-			me.renderChart();
+			me.renderChart(orientation);
 		}, 500);
     }
 });

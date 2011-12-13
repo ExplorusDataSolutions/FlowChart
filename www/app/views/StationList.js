@@ -228,14 +228,14 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		var comp = Ext.ComponentMgr.get('station-refresh');
 		comp.on('tap', function() {
 			confirm(
-				'Load stations from server? Timeout is extended to 180 seconds',  // message
+				'Please click OK to load station data now.',  // message
 				function(button) {
 					if (button == 1) {// 1 for OK
 						var store = app.stores.stations;
 						store.loadStationListFromServer(180);
 					}
 				},
-				'Refresh local data',	// title
+				'Real-time:',	// title
 				'Ok,Cancel'				// so is default
 			);
 		});
@@ -259,7 +259,7 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 						xtype: 'fieldset',
 						defaults: {
 							xtype: 'radiofield',
-							labelWidth: '75%',
+							labelWidth: '80%',
 						},
 						items: app.stores.stations.getLayerNames(),
 					}]

@@ -37,15 +37,21 @@ Ext.regApplication({
 		var confirm = window.confirm;
 		window.confirm = function(message, callback, title, buttons) {
 			if (navigator.notification) {
+				// async
 				navigator.notification.confirm(message, callback, title, buttons);
 			} else {
+				// sync
 				confirm(message) && callback(1);//default value 1 for OK
 			}
 		}
 		
 		var alert = window.alert;
-		window.alert = function(message) {
-			navigator.notification ? navigator.notification.alert(message) : alert(message);
+		window.alert = function(message, callback, title, buttonName) {
+			if (navigator.notification) {
+				navigator.notification.alert(message, callback, title, buttonName);
+			} else {
+				alert(message);
+			}
 		}
 		
 		window.showEvent = function(eventDescription) {

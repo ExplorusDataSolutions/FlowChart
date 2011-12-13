@@ -2,7 +2,7 @@
 //  main.m
 //  realtime
 //
-//  Created by Ｍa Lian on 11-10-22.
+//  Created by Ｍa Lian on 11-12-14.
 //  Copyright __MyCompanyName__ 2011年. All rights reserved.
 //
 

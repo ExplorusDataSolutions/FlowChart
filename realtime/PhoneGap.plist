@@ -16,9 +16,15 @@
 	<true/>
 	<key>ShowSplashScreenSpinner</key>
 	<true/>
+	<key>MediaPlaybackRequiresUserAction</key>
+	<false/>
+	<key>AllowInlineMediaPlayback</key>
+	<false/>
+	<key>OpenAllWhitelistURLsInWebView</key>
+	<false/>
 	<key>ExternalHosts</key>
 	<array>
-		<string></string>
+		<string>www.albertawater.com</string>
 	</array>
 	<key>Plugins</key>
 	<dict>

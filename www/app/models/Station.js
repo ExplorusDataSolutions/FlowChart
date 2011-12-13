@@ -127,6 +127,9 @@ Ext.data.MyLocalStorageProxy = Ext.extend(Ext.data.WebStorageProxy, {
 	getRecords: function() {
 		try{
 			var rawRecords = Ext.decode(this.getStorageObject().getItem(this.id));
+			if (rawRecords == null) {	// this is possible when nothing in localStorage
+				rawRecords = [];
+			}
 		} catch(e) {
 			var rawRecords = [];
 		}
@@ -321,7 +324,7 @@ app.stores.stations = new Ext.data.Store({
 				hidden: true
 			}];
 			for (var i = 0, layer; layer = layerNames[i++];) {
-				description = layer[1].toLowerCase()
+				description = layer[2].toLowerCase()
 					.replace(/([a-z])([a-z0-9]*)/g, function(m, m1, m2) {
 						return m1.toLocaleUpperCase() + m2;
 					}).replace(/[^a-z0-9]+/ig, ' ');
@@ -329,9 +332,11 @@ app.stores.stations = new Ext.data.Store({
 				this.layerNames.push({
 					name: 'layer',
 					value: layer[0],
-					description: description,
+					description: description + '(' + layer[1] + ')',
 					label: '<span style="color:silver;font-weight:normal;text-align:right;width:30px;display:inline-block;padding-right:10px">'
-						+ i + '.</span>' + description,
+						+ i + '.</span>' + description
+						+ '<span style="color:gray;font-weight:normal;font-size:14px">'
+						+ ' (' + layer[1] + ')</span>',
 					listeners: {
 						check: onLayerSelected
 					}
@@ -413,12 +418,13 @@ app.stores.stations = new Ext.data.Store({
 	},
 	loadStationListFromLastStatus: function(callback) {
 		console.log('store.loadStationListFromLastStatus');
-		window.scrollTo(0, 0);
 		
 		var store = this;
 		
 		if (store.isFiltered() === false && store.getCount() == 0) {
-			store.loadStationListFromLocal();
+			if (!store.loadStationListFromLocal()) {
+				return;
+			}
 		}
 		
 		store.filterBy(function(item, key){
@@ -442,16 +448,23 @@ app.stores.stations = new Ext.data.Store({
 		
 		if (0 == store.getCount()) {
 			confirm(
-				'Load stations right away? If it fails within 30 seconds, please try Refresh button with more time',  // message
+				'Please click OK to load station data now.'
+					+ ' If data does not load or to refresh the data'
+					+ ' please click on the refresh icon which is located top-right.',  // message
 				function(button) {
 					if (button == 1) {// 1 for OK
+						localStorage.clear();
 						store.loadStationListFromServer(30);
 					}
 				},
-				'Local data not detected',	// title
+				'Real-time:',	// title
 				'Ok,Cancel'				// so is default
 			);
+			
+			return false;
 		}
+				
+		return true;
 	},
 	loadStationListFromServer: function(timeoutSeconds) {
 		timeoutSeconds = timeoutSeconds || 30;
@@ -489,7 +502,7 @@ app.stores.stations = new Ext.data.Store({
 			}
 			
 			Ext.getBody().mask('Saving into local storage...', 'x-mask-loading', false);
-			alert('Total ' + records.length + ' stations loaded');
+			alert(records.length + ' Stations Loaded', null, 'Real-time:', 'OK');
 			
 			this.proxy.clear();
 			this.loadRecords(records);
