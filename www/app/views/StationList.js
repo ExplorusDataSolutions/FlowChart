@@ -253,6 +253,7 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 					width: Ext.is.Phone ? 260 : 400,
 					height: Ext.is.Phone ? 260 : 400,
 					scroll: 'vertical',
+					
 					items: [{
 						id: 'comp-layers-radio',
 						xtype: 'fieldset',

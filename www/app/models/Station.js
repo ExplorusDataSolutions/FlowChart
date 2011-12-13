@@ -416,12 +416,6 @@ app.stores.stations = new Ext.data.Store({
 		window.scrollTo(0, 0);
 		
 		var store = this;
-		/*if (store.cache) {
-			store.data = store.cache;
-			delete store.cache;
-			store.fireEvent('datachanged', store);
-			return true;
-		}*/
 		
 		if (store.isFiltered() === false && store.getCount() == 0) {
 			store.loadStationListFromLocal();
