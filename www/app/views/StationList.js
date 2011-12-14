@@ -235,7 +235,7 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 						store.loadStationListFromServer(180);
 					}
 				},
-				'Real-time:',	// title
+				'',	// empty to use default app.name
 				'Ok,Cancel'				// so is default
 			);
 		});

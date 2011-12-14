@@ -5,6 +5,7 @@ app.models.Layer = Ext.regModel("app.models.Layer", {
     		mapping: function(obj) {
     			return obj[0];
     		}},
+    	{name: 'field', defaultValue: ''},
     	{name: 'description',
     		mapping: function(obj) {
     			return obj[1];
@@ -332,7 +333,8 @@ app.stores.stations = new Ext.data.Store({
 				this.layerNames.push({
 					name: 'layer',
 					value: layer[0],
-					description: description + '(' + layer[1] + ')',
+					field: layer[1],
+					description: description,
 					label: '<span style="color:silver;font-weight:normal;text-align:right;width:30px;display:inline-block;padding-right:10px">'
 						+ i + '.</span>' + description
 						+ '<span style="color:gray;font-weight:normal;font-size:14px">'
@@ -457,7 +459,7 @@ app.stores.stations = new Ext.data.Store({
 						store.loadStationListFromServer(30);
 					}
 				},
-				'Real-time:',	// title
+				'',	// empty to use default app.name
 				'Ok,Cancel'				// so is default
 			);
 			
@@ -502,7 +504,11 @@ app.stores.stations = new Ext.data.Store({
 			}
 			
 			Ext.getBody().mask('Saving into local storage...', 'x-mask-loading', false);
-			alert(records.length + ' Stations Loaded', null, 'Real-time:', 'OK');
+			alert(
+				records.length + ' Stations Loaded',
+				null,
+				'',	// empty to use default app.name
+				'OK');
 			
 			this.proxy.clear();
 			this.loadRecords(records);

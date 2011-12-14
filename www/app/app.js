@@ -1,5 +1,14 @@
 Ext.regApplication({
-    name: 'app',
+	/**
+	 * This enables app.* namespace for this project
+	 */
+	name: 'app',
+	/**
+	 * As said in Gmail
+	 * @date 2011-12-14
+	 */
+    appName: 'Flowchart',
+	langerName: 'Water and Environmental Charting Utility',
     launch: function() {
         this.launched = true;	// This will be also set to true after launch() is excuted
         this.mainLaunch();
@@ -34,21 +43,23 @@ Ext.regApplication({
 			this.connectionType = states[networkState];
 		}
 		
-		var confirm = window.confirm;
+		var confirm = window.confirm,
+			me = this;
 		window.confirm = function(message, callback, title, buttons) {
 			if (navigator.notification) {
 				// async
-				navigator.notification.confirm(message, callback, title, buttons);
+				navigator.notification.confirm(message, callback, title || me.appName, buttons);
 			} else {
 				// sync
 				confirm(message) && callback(1);//default value 1 for OK
 			}
 		}
 		
-		var alert = window.alert;
+		var alert = window.alert,
+			me = this;
 		window.alert = function(message, callback, title, buttonName) {
 			if (navigator.notification) {
-				navigator.notification.alert(message, callback, title, buttonName);
+				navigator.notification.alert(message, callback, title || me.appName, buttonName);
 			} else {
 				alert(message);
 			}

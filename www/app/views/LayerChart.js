@@ -55,6 +55,45 @@ app.views.Select = Ext.extend(Ext.form.Select, {
 	onPickerCancel: function(picker) {
 		this.fireEvent('cancel', this);
     },
+	setValue: function(value) {
+        var idx = 0,
+            hiddenField = this.hiddenField,
+            record;
+
+        if (value) {
+            idx = this.store.findExact(this.valueField, value)
+        } 
+        record = this.store.getAt(idx);
+		
+        if (record && this.rendered) {
+			var description = record.get('description'),
+				field = record.get('field');
+			
+			if (!field) {
+	            this.fieldEl.dom.value = record.get(this.displayField);//description + (field ? ' (' + field + ')' : '')
+			} else {
+				this.fieldEl.dom.value = description + ' (' + field + ')'
+			}
+            this.value = record.get(this.valueField);
+            if (hiddenField) {
+                hiddenField.dom.value = this.value;
+            }
+        } else {
+            if (this.rendered) {
+                this.fieldEl.dom.value = value;
+            }
+            this.value = value;
+        }
+
+        // Temporary fix, the picker should sync with the store automatically by itself
+        if (this.picker) {
+            var pickerValue = {};
+            pickerValue[this.name] = this.value;
+            this.picker.setValue(pickerValue);
+        }
+        
+        return this;
+	},
 });
 Ext.reg('app.views.Selectfield', app.views.Select);
 
@@ -79,6 +118,8 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 			name: 'layerlist',	// important for the select list to work properly on iPhone
 			options: [{
 				value: '',
+				field: '',
+				description: '',
 				text: '- Select layers -'
 			}],
 		}]
@@ -151,6 +192,8 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 				var comp = Ext.ComponentMgr.get('comp-chart-layers');
 				comp.setOptions([{
 					value: '',
+					field: '',
+					description: '',
 					text: '- Select layers -'
 				}]);
 				select.setValue('');
@@ -166,7 +209,7 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 			}
 		}, this);
 	},
-	renderChart: function(orientation) {
+	renderChart: function() {
 		window.scrollTo(0, 0);
 		if (!this.record)
 			return true;
@@ -175,7 +218,7 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 		el.dom.innerHTML = '';
 		
 		var size = Ext.get('comp-chart').getSize(),
-			summaryHeight = orientation == 'landscape' ? 25 : 50,
+			summaryHeight = Ext.Viewport.orientation == 'landscape' ? 25 : 50,
 			adjust = 150;
 		Ext.get('chart-container').setStyle({height: (size.height - adjust) + 'px'});
 		
@@ -330,26 +373,35 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 		if (!this.layer) {
 			comp.setOptions([{
 				value: '',
+				field: '',
+				description: '',
 				text: '- Select layers -'
 			}]);
-			Ext.ComponentMgr.get('comp-chart-layers').setValue('');
+			comp.setValue('');
 		}
 		
 		var layers = record.get('layers'),
 			options = [],
 			layerNames = {};
 		app.stores.stations.getLayerNames().each(function(item, index) {
-			layerNames[item.value] = item.description;
+			layerNames[item.value] = {
+				label: item.label,
+				field: item.field,
+				description: item.description
+			}
 		});
 		
 		for (var i = 0; i < layers.length; i++) {
-			var layer = layers[i];
+			var layer = layers[i],
+				layerInfo = layerNames[layer[0]];
 			options.push({
 				value: layer[0],
-				text: layerNames[layer[0]] + (layer[2] == 0 ? '(no data)' : ''),
+				field: layerInfo.field,
+				description: layerInfo.description,
+				text: layerInfo.label + (layer[2] == 0 ? ' (no data)' : ''),
 				cls: layer[2] == 0 ? 'no-data' : 'has-data',
 			});
-			this.layer && this.layer == layer[0] && comp.setValue(layerNames[layer[0]]);
+			this.layer && this.layer == layer[0] && comp.setValue(layer[0]);
 		}
 		comp.setOptions(options);
 		
@@ -361,18 +413,9 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 		app.stores.history.setVisited(record);
     },
 	onOrientationChange: function(orientation, w, h) {
-		/*if (orientation == 'portrait')  {
-			var size = comp.getSize(), adjust = 150;
-			Ext.get('chart-container').setStyle({ height: (size.height - adjust) + 'px' });
-			console.log('chart height: ' + (size.height - adjust));
-		} else {
-			var size = comp.getSize(), adjust = 250;    		
-			Ext.get('chart-container').setStyle({ height: (size.height - adjust) + 'px' });
-			console.log('chart height: ' + (size.height - adjust));
-		}*/
 		var me = this;
 		setTimeout(function() {
-			me.renderChart(orientation);
+			me.renderChart();
 		}, 500);
     }
 });

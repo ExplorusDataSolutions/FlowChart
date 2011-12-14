@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00564B5F1498666500A8E69A /* README in Resources */ = {isa = PBXBuildFile; fileRef = 00564B5E1498666500A8E69A /* README */; };
 		006867421497E017001F5253 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 006867411497E017001F5253 /* Foundation.framework */; };
 		006867441497E017001F5253 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 006867431497E017001F5253 /* UIKit.framework */; };
 		006867461497E017001F5253 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 006867451497E017001F5253 /* CoreGraphics.framework */; };
@@ -41,7 +42,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0068673D1497E017001F5253 /* realtime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = realtime.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		00564B5E1498666500A8E69A /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		0068673D1497E017001F5253 /* Flowchart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flowchart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		006867411497E017001F5253 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		006867431497E017001F5253 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		006867451497E017001F5253 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -55,10 +57,10 @@
 		006867551497E017001F5253 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		006867571497E017001F5253 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		006867591497E017001F5253 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		0068675D1497E017001F5253 /* realtime-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "realtime-Info.plist"; sourceTree = "<group>"; };
+		0068675D1497E017001F5253 /* Flowchart-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Flowchart-Info.plist"; sourceTree = "<group>"; };
 		0068675F1497E017001F5253 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		006867611497E017001F5253 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		006867631497E017001F5253 /* realtime-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "realtime-Prefix.pch"; sourceTree = "<group>"; };
+		006867631497E017001F5253 /* Flowchart-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Flowchart-Prefix.pch"; sourceTree = "<group>"; };
 		006867641497E017001F5253 /* PhoneGap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhoneGap.framework; path = /Users/Shared/PhoneGap/Frameworks/PhoneGap.framework; sourceTree = "<absolute>"; };
 		006867691497E017001F5253 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0068676D1497E017001F5253 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Resources/es.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 		0068672F1497E017001F5253 = {
 			isa = PBXGroup;
 			children = (
+				00564B5E1498666500A8E69A /* README */,
 				006867941497E70F001F5253 /* Default.png */,
 				006867921497E708001F5253 /* Default@2x.png */,
 				006867901497E3E1001F5253 /* 114_114_Logo.png */,
@@ -128,7 +131,7 @@
 		0068673E1497E017001F5253 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0068673D1497E017001F5253 /* realtime.app */,
+				0068673D1497E017001F5253 /* Flowchart.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -168,10 +171,10 @@
 		0068675C1497E017001F5253 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				0068675D1497E017001F5253 /* realtime-Info.plist */,
+				0068675D1497E017001F5253 /* Flowchart-Info.plist */,
 				0068675E1497E017001F5253 /* InfoPlist.strings */,
 				006867611497E017001F5253 /* main.m */,
-				006867631497E017001F5253 /* realtime-Prefix.pch */,
+				006867631497E017001F5253 /* Flowchart-Prefix.pch */,
 				0068677D1497E017001F5253 /* PhoneGap.plist */,
 			);
 			name = "Supporting Files";
@@ -244,9 +247,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		0068673C1497E017001F5253 /* realtime */ = {
+		0068673C1497E017001F5253 /* Flowchart */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 006867871497E017001F5253 /* Build configuration list for PBXNativeTarget "realtime" */;
+			buildConfigurationList = 006867871497E017001F5253 /* Build configuration list for PBXNativeTarget "Flowchart" */;
 			buildPhases = (
 				006867361497E017001F5253 /* Sources */,
 				006867371497E017001F5253 /* Frameworks */,
@@ -259,9 +262,9 @@
 			);
 			dependencies = (
 			);
-			name = realtime;
+			name = Flowchart;
 			productName = realtime;
-			productReference = 0068673D1497E017001F5253 /* realtime.app */;
+			productReference = 0068673D1497E017001F5253 /* Flowchart.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -272,7 +275,7 @@
 			attributes = {
 				LastUpgradeCheck = 0420;
 			};
-			buildConfigurationList = 006867341497E017001F5253 /* Build configuration list for PBXProject "realtime" */;
+			buildConfigurationList = 006867341497E017001F5253 /* Build configuration list for PBXProject "Flowchart" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -285,7 +288,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				0068673C1497E017001F5253 /* realtime */,
+				0068673C1497E017001F5253 /* Flowchart */,
 			);
 		};
 /* End PBXProject section */
@@ -310,6 +313,7 @@
 				006867971497FA7F001F5253 /* 114_114_Logo.png in Resources */,
 				006867981497FA82001F5253 /* Default.png in Resources */,
 				006867991497FA85001F5253 /* Default@2x.png in Resources */,
+				00564B5F1498666500A8E69A /* README in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,9 +440,9 @@
 				FRAMEWORK_SEARCH_PATHS = /Users/Shared/PhoneGap/Frameworks;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "realtime/realtime-Prefix.pch";
+				GCC_PREFIX_HEADER = "realtime/Flowchart-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
-				INFOPLIST_FILE = "realtime/realtime-Info.plist";
+				INFOPLIST_FILE = "realtime/Flowchart-Info.plist";
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					UIKit,
@@ -449,7 +453,7 @@
 					"-weak_library",
 					/usr/lib/libSystem.B.dylib,
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Flowchart;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -463,9 +467,9 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = /Users/Shared/PhoneGap/Frameworks;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "realtime/realtime-Prefix.pch";
+				GCC_PREFIX_HEADER = "realtime/Flowchart-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
-				INFOPLIST_FILE = "realtime/realtime-Info.plist";
+				INFOPLIST_FILE = "realtime/Flowchart-Info.plist";
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					UIKit,
@@ -476,7 +480,7 @@
 					"-weak_library",
 					/usr/lib/libSystem.B.dylib,
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Flowchart;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -514,9 +518,9 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = /Users/Shared/PhoneGap/Frameworks;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "realtime/realtime-Prefix.pch";
+				GCC_PREFIX_HEADER = "realtime/Flowchart-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
-				INFOPLIST_FILE = "realtime/realtime-Info.plist";
+				INFOPLIST_FILE = "realtime/Flowchart-Info.plist";
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					UIKit,
@@ -527,7 +531,7 @@
 					"-weak_library",
 					/usr/lib/libSystem.B.dylib,
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Flowchart;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -537,7 +541,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		006867341497E017001F5253 /* Build configuration list for PBXProject "realtime" */ = {
+		006867341497E017001F5253 /* Build configuration list for PBXProject "Flowchart" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				006867851497E017001F5253 /* Debug */,
@@ -547,7 +551,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		006867871497E017001F5253 /* Build configuration list for PBXNativeTarget "realtime" */ = {
+		006867871497E017001F5253 /* Build configuration list for PBXNativeTarget "Flowchart" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				006867881497E017001F5253 /* Debug */,
@@ -555,6 +559,7 @@
 				0068678B1497E162001F5253 /* Ad Hoc */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
