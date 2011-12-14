@@ -283,14 +283,5 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 			action: 'showChart',
 			animation: {type:'slide', direction:'left'}
 		});
-	},
-	/*onOrientationChange : function(orientation, w, h) {
-		return
-		var comp = Ext.ComponentMgr.get('station-search');
-		if (orientation == 'portrait') {
-			comp.setWidth('250px');
-		} else {
-			comp.setWidth('400px');
-		}
-	}*/
+	}
 });

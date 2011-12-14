@@ -68,16 +68,16 @@ app.views.Select = Ext.extend(Ext.form.Select, {
         if (record && this.rendered) {
 			var description = record.get('description'),
 				field = record.get('field');
-			
+
 			if (!field) {
-	            this.fieldEl.dom.value = record.get(this.displayField);//description + (field ? ' (' + field + ')' : '')
+				this.fieldEl.dom.value = record.get(this.displayField);
 			} else {
 				this.fieldEl.dom.value = description + ' (' + field + ')'
 			}
-            this.value = record.get(this.valueField);
-            if (hiddenField) {
-                hiddenField.dom.value = this.value;
-            }
+			this.value = record.get(this.valueField);
+			if (hiddenField) {
+				hiddenField.dom.value = this.value;
+			}
         } else {
             if (this.rendered) {
                 this.fieldEl.dom.value = value;
@@ -401,9 +401,9 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 				text: layerInfo.label + (layer[2] == 0 ? ' (no data)' : ''),
 				cls: layer[2] == 0 ? 'no-data' : 'has-data',
 			});
-			this.layer && this.layer == layer[0] && comp.setValue(layer[0]);
 		}
 		comp.setOptions(options);
+		this.layer && comp.setValue(parseInt(this.layer));
 		
 		
 		var toolbar = this.getDockedItems()[0],
