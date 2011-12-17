@@ -43,7 +43,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0055D44614995F680085FAB9 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
+		0055D44614995F680085FAB9 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = text; path = iTunesArtwork; sourceTree = "<group>"; };
 		00564B5E1498666500A8E69A /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		0068673D1497E017001F5253 /* Flowchart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flowchart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		006867411497E017001F5253 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -124,7 +124,7 @@
 				006867901497E3E1001F5253 /* 114_114_Logo.png */,
 				0068678E1497E3DD001F5253 /* 57_57_Logo.png */,
 				0068678C1497E1DD001F5253 /* www */,
-				0068675B1497E017001F5253 /* realtime */,
+				0068675B1497E017001F5253 /* Flowchart */,
 				006867401497E017001F5253 /* Frameworks */,
 				0068673E1497E017001F5253 /* Products */,
 			);
@@ -158,7 +158,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		0068675B1497E017001F5253 /* realtime */ = {
+		0068675B1497E017001F5253 /* Flowchart */ = {
 			isa = PBXGroup;
 			children = (
 				006867641497E017001F5253 /* PhoneGap.framework */,
@@ -167,7 +167,7 @@
 				006867831497E017001F5253 /* Plugins */,
 				0068675C1497E017001F5253 /* Supporting Files */,
 			);
-			path = realtime;
+			path = Flowchart;
 			sourceTree = "<group>";
 		};
 		0068675C1497E017001F5253 /* Supporting Files */ = {
@@ -266,7 +266,7 @@
 			dependencies = (
 			);
 			name = Flowchart;
-			productName = realtime;
+			productName = Flowchart;
 			productReference = 0068673D1497E017001F5253 /* Flowchart.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -444,9 +444,9 @@
 				FRAMEWORK_SEARCH_PATHS = /Users/Shared/PhoneGap/Frameworks;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "realtime/Flowchart-Prefix.pch";
+				GCC_PREFIX_HEADER = "Flowchart/Flowchart-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
-				INFOPLIST_FILE = "realtime/Flowchart-Info.plist";
+				INFOPLIST_FILE = "Flowchart/Flowchart-Info.plist";
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					UIKit,
@@ -471,9 +471,9 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = /Users/Shared/PhoneGap/Frameworks;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "realtime/Flowchart-Prefix.pch";
+				GCC_PREFIX_HEADER = "Flowchart/Flowchart-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
-				INFOPLIST_FILE = "realtime/Flowchart-Info.plist";
+				INFOPLIST_FILE = "Flowchart/Flowchart-Info.plist";
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					UIKit,
@@ -522,9 +522,9 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = /Users/Shared/PhoneGap/Frameworks;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "realtime/Flowchart-Prefix.pch";
+				GCC_PREFIX_HEADER = "Flowchart/Flowchart-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
-				INFOPLIST_FILE = "realtime/Flowchart-Info.plist";
+				INFOPLIST_FILE = "Flowchart/Flowchart-Info.plist";
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					UIKit,
