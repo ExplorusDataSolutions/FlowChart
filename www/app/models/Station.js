@@ -370,9 +370,12 @@ app.stores.stations = new Ext.data.Store({
 			if (layerid == 0) {
 				return true;
 			}
-			if (filters['keyword'] && filters['keyword'].currentKeyword) {
-				return true;
-			}
+			/**
+			 * Comment below to allow search & layer
+			 */
+			//if (filters['keyword'] && filters['keyword'].currentKeyword) {
+			//	return true;
+			//}
 		
 			var layers = item.get('layers'),
 				i, layer;

@@ -193,15 +193,16 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 		 */
 		var comp = Ext.ComponentMgr.get('station-search');
 		comp.on('keyup', function() {
+			if (store.statusFilters['layer']) {
+				store.setLayerFilter(store.statusFilters['layer'].layerid);
+			}
+			
 			var keyword = this.getValue().toLowerCase();
 			
 			if (keyword.length == 0) {
 				delete store.statusFilters.keyword;
 				store.loadStationListFromLastStatus();
 				
-				if (store.statusFilters['layer']) {
-					store.setLayerFilter(store.statusFilters['layer'].layerid);
-				}
 			}
 			if (keyword.length > 2) {
 				store.resetLayerNames();
@@ -262,7 +263,25 @@ app.views.StationList = Ext.extend(Ext.TabPanel, {
 							labelWidth: '80%',
 						},
 						items: app.stores.stations.getLayerNames(),
-					}]
+					}],
+					
+					listeners: {
+						show: function() {
+							var store = app.stores.stations,
+								filters = store.statusFilters,
+								layerid = filters['layer'] && filters['layer'].layerid;
+							
+							if (layerid) {
+								var comp = Ext.ComponentMgr.get('comp-layers-radio');
+								comp.items.each(function(item, index) {
+									if (item.value == layerid) {
+										item.fieldEl.dom.checked = true;
+										return false;
+									}
+								});
+							}
+						}
+					}
 				});
 			}
 			
