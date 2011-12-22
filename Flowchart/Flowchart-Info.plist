@@ -12,9 +12,12 @@
 	<string>icon.png</string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>icon-72.png</string>
+		<string>72_72_Logo.png</string>
 		<string>57_57_Logo.png</string>
 		<string>114_114_Logo.png</string>
+		<string>iPhone_icon_57_57.png</string>
+		<string>iPhone_icon_114_114.png</string>
+		<string>iPad_icon_72_72.png</string>
 	</array>
 	<key>CFBundleIcons</key>
 	<dict>
@@ -22,9 +25,12 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>icon-72.png</string>
+				<string>72_72_Logo.png</string>
 				<string>57_57_Logo.png</string>
 				<string>114_114_Logo.png</string>
+				<string>iPhone_icon_57_57.png</string>
+				<string>iPhone_icon_114_114.png</string>
+				<string>iPad_icon_72_72.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<false/>
