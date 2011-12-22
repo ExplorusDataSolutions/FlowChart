@@ -1319,13 +1319,17 @@ Flotr.Graph = Class.create({
 			// Add y labels.
 			axis = a.y;
 			if(axis.options.showLabels) {
+				var top = 0;
 				for( i = 0; i < axis.ticks.length; ++i) {
 					tick = axis.ticks[i];
-					if(!tick.label || tick.label.length == 0 || (this.plotOffset.top + axis.d2p(tick.v) < 0) || (this.plotOffset.top + axis.d2p(tick.v) > this.canvasHeight))
+					if (i == 0) {
+						top = this.plotOffset.top + axis.d2p(tick.v) + axis.maxLabel.height;
+					} else if (this.plotOffset.top + axis.d2p(tick.v) < top) {
 						continue;
-					var top = this.plotOffset.top + axis.d2p(tick.v) - axis.maxLabel.height / 2;
-					if (i == 0) top -= 18;
-					html.push('<div style="position:absolute;top:' + (top) + 'px;left:0;width:auto;text-align:right;' + (axis.options.color ? ('color:' + axis.options.color + ';') : '') + '" class="flotr-grid-label">' + tick.label + '</div>');
+					}
+					if(!tick.label || tick.label.length == 0 || (this.plotOffset.top + axis.d2p(tick.v) <= 0 && i != 0) || (this.plotOffset.top + axis.d2p(tick.v) > this.canvasHeight))
+						continue;
+					html.push('<div style="position:absolute;top:' + (this.plotOffset.top + axis.d2p(tick.v)) + 'px;left:0;width:auto;text-align:right;' + (axis.options.color ? ('color:' + axis.options.color + ';') : '') + '" class="flotr-grid-label">' + tick.label + '</div>');
 				}
 			}
 

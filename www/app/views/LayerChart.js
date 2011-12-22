@@ -258,7 +258,7 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 				}
 				ticks.push({
 					v: y.max,
-					label: '<br />' + y.min.toFixed(2) + ' - ' + y.max.toFixed(2) + unit
+					label: y.min.toFixed(2) + ' - ' + y.max.toFixed(2) + unit
 				})
 			}
 			if (n == ticks[0].v) {
