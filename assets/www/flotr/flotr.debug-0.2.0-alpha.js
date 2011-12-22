@@ -353,6 +353,8 @@ Flotr.Graph = Class.create({
 		this.calculateTicks(this.axes.x2);
 		this.calculateTicks(this.axes.y);
 		this.calculateTicks(this.axes.y2);
+		
+		//this.axes.y.ticks.pop();
 
 		this.calculateSpacing();
 		this.setupAxes();
@@ -766,11 +768,13 @@ Flotr.Graph = Class.create({
 
 		if(a.x2.used) {
 			this.calculateRange(a.x2, 'x');
+
 		}
 
 		this.calculateRange(a.y, 'y');
 
 		if(a.y2.used) {
+
 			this.calculateRange(a.y2, 'y');
 		}
 	},
@@ -788,7 +792,14 @@ Flotr.Graph = Class.create({
 	calculateRange : function(axis, type) {
 		var o = axis.options, min = o.min != null ? o.min : axis.datamin, max = o.max != null ? o.max : axis.datamax, margin = o.autoscaleMargin;
 
-		if(max - min == 0.0) {
+		/*if (this.data.length == 1) {
+			axis.min = axis.datamin;
+			axis.max = axis.datamax;
+			axis.tickSize = Flotr.getTickSize(o.noTicks, min, max, o.tickDecimals);
+			return;
+		}*/
+		
+		if (max - min == 0.0 && type == 'y') {
 			var widen = (max == 0.0) ? 1.0 : 0.01;
 			min -= widen;
 			max += widen;
@@ -1308,11 +1319,17 @@ Flotr.Graph = Class.create({
 			// Add y labels.
 			axis = a.y;
 			if(axis.options.showLabels) {
+				var top = 0;
 				for( i = 0; i < axis.ticks.length; ++i) {
 					tick = axis.ticks[i];
-					if(!tick.label || tick.label.length == 0 || (this.plotOffset.top + axis.d2p(tick.v) < 0) || (this.plotOffset.top + axis.d2p(tick.v) > this.canvasHeight))
+					if (i == 0) {
+						top = this.plotOffset.top + axis.d2p(tick.v) + axis.maxLabel.height;
+					} else if (this.plotOffset.top + axis.d2p(tick.v) < top) {
 						continue;
-					html.push('<div style="position:absolute;top:' + (this.plotOffset.top + axis.d2p(tick.v) - axis.maxLabel.height / 2) + 'px;left:0;width:auto;text-align:right;' + (axis.options.color ? ('color:' + axis.options.color + ';') : '') + '" class="flotr-grid-label">' + tick.label + '</div>');
+					}
+					if(!tick.label || tick.label.length == 0 || (this.plotOffset.top + axis.d2p(tick.v) <= 0 && i != 0) || (this.plotOffset.top + axis.d2p(tick.v) > this.canvasHeight))
+						continue;
+					html.push('<div style="position:absolute;top:' + (this.plotOffset.top + axis.d2p(tick.v)) + 'px;left:0;width:auto;text-align:right;' + (axis.options.color ? ('color:' + axis.options.color + ';') : '') + '" class="flotr-grid-label">' + tick.label + '</div>');
 				}
 			}
 
