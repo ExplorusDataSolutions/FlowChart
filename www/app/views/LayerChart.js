@@ -294,25 +294,27 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 				Ext.getBody().mask('Loading...', 'x-mask-loading', false);
 				
 				Ext.Ajax.request({
-					url: 'http://www.albertawater.com/awp/api/realtime/station',
+					//url: 'http://localhost/ZF2/WE-Realtime/',
+					url: 'http://174.129.186.236/',
+					method: 'POST',
 					jsonData: {
-						request: "getdata",
-						serviceid: 2,
-						layerid: layer,
+						request: "getLayerData",
+						layerId: layer,
 						time : {
 							begintime: '',
 							endtime: ''
 						},
-						station: station
+						station: station,
+						format: 'json',
 					},
 					timeout: 180 * 1000,
 					success: function(response, opts) {
 						Ext.getBody().unmask();
 						
 						var obj = Ext.decode(response.responseText),
-							unit = obj.data[0].unit
+							unit = 'unit';//obj.data[0].unit
 						try {
-							rawData = obj.data[0].readings.reverse();
+							rawData = obj.data.reverse();
 						} catch(e) {
 							rawData = [];
 						}
