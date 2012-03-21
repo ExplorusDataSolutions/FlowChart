@@ -479,8 +479,8 @@ app.stores.stations = new Ext.data.Store({
 		store.clearFilter();
 		store.resetLayerNames();
 		
-		var proxy = new Ext.data.AjaxProxy({
-			url: 'http://www.albertawater.com/awp/api/realtime/stations',
+		/*var proxy = new Ext.data.AjaxProxy({
+			//url: 'http://www.albertawater.com/awp/api/realtime/stations',
 			timeout: timeoutSeconds * 1000,
 			reader: new Ext.data.JsonReader({
 				getData: function(data) {
@@ -489,35 +489,51 @@ app.stores.stations = new Ext.data.Store({
 				},
 				model: app.models.Station
 			})
-		});
+		});*/
 		
 		Ext.getBody().mask('Loading...', 'x-mask-loading', false);
 		
-		proxy.read(new Ext.data.Operation({action: 'read'}), function(operation) {
-			var records = operation.getRecords();
-			
-			if (typeof records == 'undefined') {
-				records = [];
-			}
-			
-			for (var i = 0, record; record = records[i++];) {
-				if (record.data.id == 0) {
-					record.data.id = i;
+		//proxy.read(new Ext.data.Operation({action: 'read'}), function(operation) {
+		Ext.Ajax.request({
+			url: 'http://realtime.waterenvironmentalhub.ca/',
+			jsonData: {
+				request: 'getStationListWithLayerNames',
+				format: 'json',
+			},
+			method: 'POST',
+			success: function(response) {
+				var json = Ext.decode(response.responseText);
+				var result = json.result;
+				
+				store.saveLayerNames(json.layerNames);
+				
+				var record, values, records = [];
+				var Model = store.model, reader = store.proxy.reader;
+				for (var i = 0, row; row = result[i++];) {
+					row.id = i;
+					values = reader.extractValues(row);
+					record = new Model(values, i);
+					record.raw = row;
+					records.push(record);
 				}
+				
+				Ext.getBody().mask('Saving into local storage...', 'x-mask-loading', false);
+				alert(
+					records.length + ' Stations Loaded',
+					null,
+					'',	// empty to use default app.name
+					'OK');
+				
+				store.proxy.clear();
+				//store.loadRecords(records);
+				
+				store.suspendEvents();
+				store.add(records);
+				store.resumeEvents();
+				
+				store.sync();//300 station need 15s, too slow
+				Ext.getBody().unmask();
 			}
-			
-			Ext.getBody().mask('Saving into local storage...', 'x-mask-loading', false);
-			alert(
-				records.length + ' Stations Loaded',
-				null,
-				'',	// empty to use default app.name
-				'OK');
-			
-			this.proxy.clear();
-			this.loadRecords(records);
-			
-			this.sync();//300 station need 15s, too slow
-			Ext.getBody().unmask();
-		}, this);
+		});
 	}
 });
