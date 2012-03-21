@@ -7,13 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0033F03B14A3B71D002D634E /* iPad_icon_72_72.png in Resources */ = {isa = PBXBuildFile; fileRef = 0033F03414A3B71D002D634E /* iPad_icon_72_72.png */; };
-		0033F03E14A3B71D002D634E /* iPhone_icon_57_57.png in Resources */ = {isa = PBXBuildFile; fileRef = 0033F03714A3B71D002D634E /* iPhone_icon_57_57.png */; };
-		0033F03F14A3B71D002D634E /* iPhone_icon_114_114.png in Resources */ = {isa = PBXBuildFile; fileRef = 0033F03814A3B71D002D634E /* iPhone_icon_114_114.png */; };
-		0033F04314A3B753002D634E /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 0033F04214A3B752002D634E /* Default.png */; };
-		0033F04514A3B75C002D634E /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0033F04414A3B75C002D634E /* Default@2x.png */; };
-		0033F04714A3B78C002D634E /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0033F04614A3B78C002D634E /* Default-Portrait~ipad.png */; };
-		0033F04914A3B796002D634E /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0033F04814A3B796002D634E /* Default-Landscape~ipad.png */; };
+		0005884D151992CF0035417D /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0005884C151992CF0035417D /* Entitlements.plist */; };
 		0055D44714995F680085FAB9 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 0055D44614995F680085FAB9 /* iTunesArtwork */; };
 		00564B5F1498666500A8E69A /* README in Resources */ = {isa = PBXBuildFile; fileRef = 00564B5E1498666500A8E69A /* README */; };
 		006867421497E017001F5253 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 006867411497E017001F5253 /* Foundation.framework */; };
@@ -41,16 +35,17 @@
 		0068677E1497E017001F5253 /* PhoneGap.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0068677D1497E017001F5253 /* PhoneGap.plist */; };
 		006867821497E017001F5253 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 006867811497E017001F5253 /* AppDelegate.m */; };
 		0068678D1497E1DD001F5253 /* www in Resources */ = {isa = PBXBuildFile; fileRef = 0068678C1497E1DD001F5253 /* www */; };
+		00D2C81E14A3C0DE00D01D65 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 00D2C81714A3C0DE00D01D65 /* Default-Landscape~ipad.png */; };
+		00D2C81F14A3C0DE00D01D65 /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 00D2C81814A3C0DE00D01D65 /* Default-Portrait~ipad.png */; };
+		00D2C82014A3C0DE00D01D65 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 00D2C81914A3C0DE00D01D65 /* Default.png */; };
+		00D2C82114A3C0DE00D01D65 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 00D2C81A14A3C0DE00D01D65 /* Default@2x.png */; };
+		00D2C82214A3C0DE00D01D65 /* iPad_icon_72_72.png in Resources */ = {isa = PBXBuildFile; fileRef = 00D2C81B14A3C0DE00D01D65 /* iPad_icon_72_72.png */; };
+		00D2C82314A3C0DE00D01D65 /* iPhone_icon_57_57.png in Resources */ = {isa = PBXBuildFile; fileRef = 00D2C81C14A3C0DE00D01D65 /* iPhone_icon_57_57.png */; };
+		00D2C82414A3C0DE00D01D65 /* iPhone_icon_114_114.png in Resources */ = {isa = PBXBuildFile; fileRef = 00D2C81D14A3C0DE00D01D65 /* iPhone_icon_114_114.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0033F03414A3B71D002D634E /* iPad_icon_72_72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPad_icon_72_72.png; sourceTree = "<group>"; };
-		0033F03714A3B71D002D634E /* iPhone_icon_57_57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPhone_icon_57_57.png; sourceTree = "<group>"; };
-		0033F03814A3B71D002D634E /* iPhone_icon_114_114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPhone_icon_114_114.png; sourceTree = "<group>"; };
-		0033F04214A3B752002D634E /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		0033F04414A3B75C002D634E /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		0033F04614A3B78C002D634E /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
-		0033F04814A3B796002D634E /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		0005884C151992CF0035417D /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Entitlements.plist; path = Resources/Entitlements.plist; sourceTree = "<group>"; };
 		0055D44614995F680085FAB9 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = text; path = iTunesArtwork; sourceTree = "<group>"; };
 		00564B5E1498666500A8E69A /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		0068673D1497E017001F5253 /* Flowchart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flowchart.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,6 +78,13 @@
 		006867811497E017001F5253 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Classes/AppDelegate.m; sourceTree = "<group>"; };
 		006867841497E017001F5253 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; name = README; path = Plugins/README; sourceTree = "<group>"; };
 		0068678C1497E1DD001F5253 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
+		00D2C81714A3C0DE00D01D65 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		00D2C81814A3C0DE00D01D65 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
+		00D2C81914A3C0DE00D01D65 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		00D2C81A14A3C0DE00D01D65 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		00D2C81B14A3C0DE00D01D65 /* iPad_icon_72_72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPad_icon_72_72.png; sourceTree = "<group>"; };
+		00D2C81C14A3C0DE00D01D65 /* iPhone_icon_57_57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPhone_icon_57_57.png; sourceTree = "<group>"; };
+		00D2C81D14A3C0DE00D01D65 /* iPhone_icon_114_114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPhone_icon_114_114.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,14 +122,14 @@
 		0068672F1497E017001F5253 = {
 			isa = PBXGroup;
 			children = (
-				0033F04814A3B796002D634E /* Default-Landscape~ipad.png */,
-				0033F04614A3B78C002D634E /* Default-Portrait~ipad.png */,
-				0033F04414A3B75C002D634E /* Default@2x.png */,
-				0033F04214A3B752002D634E /* Default.png */,
 				00564B5E1498666500A8E69A /* README */,
-				0033F03414A3B71D002D634E /* iPad_icon_72_72.png */,
-				0033F03714A3B71D002D634E /* iPhone_icon_57_57.png */,
-				0033F03814A3B71D002D634E /* iPhone_icon_114_114.png */,
+				00D2C81714A3C0DE00D01D65 /* Default-Landscape~ipad.png */,
+				00D2C81814A3C0DE00D01D65 /* Default-Portrait~ipad.png */,
+				00D2C81914A3C0DE00D01D65 /* Default.png */,
+				00D2C81A14A3C0DE00D01D65 /* Default@2x.png */,
+				00D2C81B14A3C0DE00D01D65 /* iPad_icon_72_72.png */,
+				00D2C81C14A3C0DE00D01D65 /* iPhone_icon_57_57.png */,
+				00D2C81D14A3C0DE00D01D65 /* iPhone_icon_114_114.png */,
 				0068678C1497E1DD001F5253 /* www */,
 				0068675B1497E017001F5253 /* Flowchart */,
 				006867401497E017001F5253 /* Frameworks */,
@@ -195,6 +197,7 @@
 				006867671497E017001F5253 /* en.lproj */,
 				0068676B1497E017001F5253 /* es.lproj */,
 				0068676F1497E017001F5253 /* icons */,
+				0005884C151992CF0035417D /* Entitlements.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -307,13 +310,14 @@
 				0068678D1497E1DD001F5253 /* www in Resources */,
 				00564B5F1498666500A8E69A /* README in Resources */,
 				0055D44714995F680085FAB9 /* iTunesArtwork in Resources */,
-				0033F03B14A3B71D002D634E /* iPad_icon_72_72.png in Resources */,
-				0033F03E14A3B71D002D634E /* iPhone_icon_57_57.png in Resources */,
-				0033F03F14A3B71D002D634E /* iPhone_icon_114_114.png in Resources */,
-				0033F04314A3B753002D634E /* Default.png in Resources */,
-				0033F04514A3B75C002D634E /* Default@2x.png in Resources */,
-				0033F04714A3B78C002D634E /* Default-Portrait~ipad.png in Resources */,
-				0033F04914A3B796002D634E /* Default-Landscape~ipad.png in Resources */,
+				00D2C81E14A3C0DE00D01D65 /* Default-Landscape~ipad.png in Resources */,
+				00D2C81F14A3C0DE00D01D65 /* Default-Portrait~ipad.png in Resources */,
+				00D2C82014A3C0DE00D01D65 /* Default.png in Resources */,
+				00D2C82114A3C0DE00D01D65 /* Default@2x.png in Resources */,
+				00D2C82214A3C0DE00D01D65 /* iPad_icon_72_72.png in Resources */,
+				00D2C82314A3C0DE00D01D65 /* iPhone_icon_57_57.png in Resources */,
+				00D2C82414A3C0DE00D01D65 /* iPhone_icon_114_114.png in Resources */,
+				0005884D151992CF0035417D /* Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,7 +392,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Spencer Cox";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Spencer Cox (R8256LF98L)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -405,7 +409,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				KEEP_PRIVATE_EXTERNS = NO;
-				PROVISIONING_PROFILE = "28FAA988-CFF5-4862-BC6C-5C38FC3A7296";
+				PROVISIONING_PROFILE = "1C7246E3-D0B5-48FA-B592-1F3D3C8A3D4A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -416,7 +421,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Spencer Cox";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Spencer Cox (R8256LF98L)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -426,7 +431,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				KEEP_PRIVATE_EXTERNS = NO;
-				PROVISIONING_PROFILE = "28FAA988-CFF5-4862-BC6C-5C38FC3A7296";
+				PROVISIONING_PROFILE = "1C7246E3-D0B5-48FA-B592-1F3D3C8A3D4A";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -443,6 +448,7 @@
 				GCC_PREFIX_HEADER = "Flowchart/Flowchart-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
 				INFOPLIST_FILE = "Flowchart/Flowchart-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					UIKit,
@@ -470,6 +476,7 @@
 				GCC_PREFIX_HEADER = "Flowchart/Flowchart-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
 				INFOPLIST_FILE = "Flowchart/Flowchart-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					UIKit,
@@ -493,7 +500,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Spencer Cox";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Spencer Cox (R8256LF98L)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -503,7 +510,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				KEEP_PRIVATE_EXTERNS = NO;
-				PROVISIONING_PROFILE = "28FAA988-CFF5-4862-BC6C-5C38FC3A7296";
+				PROVISIONING_PROFILE = "1C7246E3-D0B5-48FA-B592-1F3D3C8A3D4A";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -514,6 +521,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Spencer Cox";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = /Users/Shared/PhoneGap/Frameworks;
@@ -521,6 +529,7 @@
 				GCC_PREFIX_HEADER = "Flowchart/Flowchart-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "PHONEGAP_FRAMEWORK=YES";
 				INFOPLIST_FILE = "Flowchart/Flowchart-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					UIKit,
@@ -532,6 +541,7 @@
 					/usr/lib/libSystem.B.dylib,
 				);
 				PRODUCT_NAME = Flowchart;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B13D87BB-21D5-47B7-AF79-0A0B7BAF2F39";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;

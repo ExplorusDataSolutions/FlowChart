@@ -12,9 +12,6 @@
 	<string>icon.png</string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>72_72_Logo.png</string>
-		<string>57_57_Logo.png</string>
-		<string>114_114_Logo.png</string>
 		<string>iPhone_icon_57_57.png</string>
 		<string>iPhone_icon_114_114.png</string>
 		<string>iPad_icon_72_72.png</string>
@@ -25,9 +22,6 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>72_72_Logo.png</string>
-				<string>57_57_Logo.png</string>
-				<string>114_114_Logo.png</string>
 				<string>iPhone_icon_57_57.png</string>
 				<string>iPhone_icon_114_114.png</string>
 				<string>iPad_icon_72_72.png</string>
@@ -45,11 +39,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3.5</string>
+	<string>1.4</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.3</string>
+	<string>1.4</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSMainNibFile~ipad</key>

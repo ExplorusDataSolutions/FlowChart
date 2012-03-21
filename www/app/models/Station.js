@@ -495,8 +495,7 @@ app.stores.stations = new Ext.data.Store({
 		
 		//proxy.read(new Ext.data.Operation({action: 'read'}), function(operation) {
 		Ext.Ajax.request({
-			//url: 'http://localhost/ZF2/WE-Realtime/',
-			url: 'http://174.129.186.236/',
+			url: 'http://realtime.waterenvironmentalhub.ca/',
 			jsonData: {
 				request: 'getStationListWithLayerNames',
 				format: 'json',
@@ -526,7 +525,11 @@ app.stores.stations = new Ext.data.Store({
 					'OK');
 				
 				store.proxy.clear();
-				store.loadRecords(records);
+				//store.loadRecords(records);
+				
+				store.suspendEvents();
+				store.add(records);
+				store.resumeEvents();
 				
 				store.sync();//300 station need 15s, too slow
 				Ext.getBody().unmask();

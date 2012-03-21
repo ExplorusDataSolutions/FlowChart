@@ -294,8 +294,7 @@ app.views.LayerChart = Ext.extend(Ext.Panel, {
 				Ext.getBody().mask('Loading...', 'x-mask-loading', false);
 				
 				Ext.Ajax.request({
-					//url: 'http://localhost/ZF2/WE-Realtime/',
-					url: 'http://174.129.186.236/',
+					url: 'http://realtime.waterenvironmentalhub.ca/',
 					method: 'POST',
 					jsonData: {
 						request: "getLayerData",
